@@ -1,0 +1,66 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'widget/Left Column/category_left_menu.dart';
+import 'widget/Right Column/right_panel.dart';
+import 'widget/searchbar.dart'; // your existing right panel file path
+
+class CategoryScreen extends ConsumerWidget {
+  const CategoryScreen({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              pinned: true,
+              elevation: 0,
+              backgroundColor: Colors.white,
+              toolbarHeight: 70,
+              flexibleSpace: SafeArea(
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  child: Row(
+                    children: [
+                      const Expanded(child: CategorySearchBar()),
+                      const SizedBox(width: 10),
+                      IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Icons.notifications_none,
+                            color: Colors.black, size: 30),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            SliverToBoxAdapter(
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                width: double.infinity,
+                color: const Color(0xFFFF7D26),
+                child: const Text(
+                  "11.11 SALE • Ends Nov 20",
+                  style: TextStyle(color: Colors.white, fontSize: 15),
+                ),
+              ),
+            ),
+            SliverFillRemaining(
+              child: Row(
+                children: const [
+                  CategoryLeftMenu(),
+                  Expanded(
+                    child: CategoryRightPanel(), // your right panel
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

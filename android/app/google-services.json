@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "43817221860",
+    "project_id": "brodbay-359a7",
+    "storage_bucket": "brodbay-359a7.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:43817221860:android:54e0d72c06f29560c536f1",
+        "android_client_info": {
+          "package_name": "com.example.brodbay_project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "43817221860-nhsvlreqies59st3il0s6j9iusnhdtcu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDuMcqLOZ4UgY00ktUF2Wkoe66iRf4FMdQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "43817221860-nhsvlreqies59st3il0s6j9iusnhdtcu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
