@@ -1,5 +1,5 @@
 // lib/data/category_data.dart
-import '../models/category_model.dart';
+/*import '../models/category_model.dart';
 
 final List<CategoryModel> categories = [
   CategoryModel(name: "For you"),
@@ -12,4 +12,4 @@ final List<CategoryModel> categories = [
   CategoryModel(name: "Phone Accessories"),
   CategoryModel(name: "Birds Feed"),
   CategoryModel(name: "More"),
-];
+];*/

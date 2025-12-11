@@ -58,9 +58,9 @@ class PriceSection extends ConsumerWidget {
                   style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xFFFF6304)),
                 ),
                 const SizedBox(width: 6),
-                if (product.sale_price != null)
+                if (product.regular_price != null)
                   Text(
-                    '${product.currencySymbol}${product.sale_price!.toStringAsFixed(2)}',
+                    '${product.currencySymbol}${product.regular_price!.toStringAsFixed(2)}',
                     style: const TextStyle(fontSize: 12, decoration: TextDecoration.lineThrough, color: Colors.grey),
                     overflow: TextOverflow.ellipsis,
                   ),

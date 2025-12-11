@@ -1,5 +1,5 @@
 
-class RecommendedItem {
+/*class RecommendedItem {
   final String title;
   final String image;
 
@@ -8,5 +8,5 @@ class RecommendedItem {
     required this.image,
   });
 }
-
+*/
 

@@ -1,4 +1,4 @@
-class CategoryModel {
+/*class CategoryModel {
   final String name;
 
   CategoryModel({
@@ -17,4 +17,4 @@ final List<CategoryModel> categories = [
   CategoryModel(name: "Phone Accessories"),
   CategoryModel(name: "Birds Feed"),
   CategoryModel(name: "More"),
-];
+];*/

@@ -1,7 +1,14 @@
+// File: lib/services/products_notifier.dart
+//
+// Fixed fields:
+// - Use the unified WooSecure client (query param auth)
+// - Defensive parsing and clearer error messages
+// - Preserve AsyncNotifier pattern and refresh behavior
+
 import 'dart:convert';
 import 'package:brodbay/models/products.dart';
+import 'package:brodbay/providers/woo_secure_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'woo_secure_provider.dart';
 
 
 final productsProvider =
@@ -13,18 +20,17 @@ class ProductsNotifier extends AsyncNotifier<List<Product>> {
 
   @override
   Future<List<Product>> build() async {
-  _woo = ref.read(wooSecureProvider);
+    _woo = ref.read(wooSecureProvider);
     return await _fetchProducts();
   }
 
-  // --------------------------------------------------------
-  // THIS IS THE METHOD YOU REPLACE – SAFE PRODUCT PARSER
-  // --------------------------------------------------------
   Future<List<Product>> _fetchProducts({int perPage = 20, int page = 1}) async {
     final resp = await _woo.getProducts(perPage: perPage, page: page);
 
-    print("Status: ${resp.statusCode}");
-    print("Body: ${resp.body}");
+    print("ProductsNotifier Status: ${resp.statusCode}");
+    if (resp.body.isNotEmpty) {
+      print("ProductsNotifier Body snippet: ${resp.body.length > 800 ? resp.body.substring(0, 800) : resp.body}");
+    }
 
     if (resp.statusCode >= 400) {
       try {

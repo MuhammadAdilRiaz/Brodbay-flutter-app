@@ -37,12 +37,13 @@ class ProductHead extends ConsumerWidget {
               return GridView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
+                padding: EdgeInsets.zero,
                 itemCount: list.length,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
-                  childAspectRatio: 0.78,
-                  mainAxisSpacing: 8,
-                  crossAxisSpacing: 8,
+                  childAspectRatio: 0.85,
+                  mainAxisSpacing: 0,
+                  crossAxisSpacing: 0,
                 ),
                 itemBuilder: (context, index) {
                   final p = list[index];
@@ -60,8 +61,14 @@ class ProductHead extends ConsumerWidget {
 
             final cardWidth = MediaQuery.of(context).size.width * 0.45;
             final widthLimit = cardWidth > 172 ? 172.0 : cardWidth;
+            final double imageHeight = widthLimit / 1.8; 
+            final double titleHeight = 20.0;
+            final double priceRowHeight = 20.0;
+            final double ratingRowHeight = 18.0;
+            final double innerVerticalGaps = 8.0 + 6.0 + 6.0;
+            final double cardHeight = imageHeight + titleHeight + priceRowHeight + ratingRowHeight + innerVerticalGaps + 18.0;
             return SizedBox(
-              height: widthLimit * 1.5,
+              height: cardHeight,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: list.length,

@@ -1,5 +1,11 @@
-// lib/services/WooCommerceSecure/woocommerce_secure.dart
-import 'dart:convert';
+// File: lib/services/woo_secure.dart
+//
+// Fixed fields:
+// - Unified auth approach: use query param auth (consumer_key / consumer_secret)
+// - Removed Basic auth header usage
+// - Provider setup compatible with Riverpod
+
+
 import 'package:http/http.dart' as http;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -10,8 +16,7 @@ final wooSecureProvider = Provider<WooSecure>((ref) {
 });
 
 class WooSecureConfig {
-  // Base root for WooCommerce REST API - do NOT include /products here
-  static const String baseUrl = 'https://brodbay.co.uk/wp-json/wc/v3';
+  static const String baseUrl = 'https://brodbay.co.uk/wp-json/wc/store/products';
   static const String consumerKey = 'ck_6c90af34e3403f099e41885bf870a08ddc720e18';
   static const String consumerSecret = 'cs_e18f1b6e3961481cb97a93f2b44fb405fc94a6db';
 }
@@ -23,7 +28,7 @@ class WooSecure {
 
   /// Request products using query parameters for keys (most-compatible)
   Future<http.Response> getProducts({int perPage = 20, int page = 1}) async {
-    final uri = Uri.parse('${WooSecureConfig.baseUrl}/products').replace(
+    final uri = Uri.parse(WooSecureConfig.baseUrl).replace(
       queryParameters: {
         'per_page': perPage.toString(),
         'page': page.toString(),
@@ -40,7 +45,9 @@ class WooSecure {
     });
 
     print('Response status: ${response.statusCode}');
-    print('Response body snippet: ${response.body.length > 800 ? response.body.substring(0, 800) : response.body}');
+    if (response.body.isNotEmpty) {
+      print('Response body snippet: ${response.body.length > 800 ? response.body.substring(0, 800) : response.body}');
+    }
     return response;
   }
 

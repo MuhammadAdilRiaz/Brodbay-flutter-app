@@ -47,11 +47,22 @@ class HomeState {
 class HomeNotifier extends StateNotifier<HomeState> {
   HomeNotifier([HomeState? initial]) : super(initial ?? const HomeState());
 
-  // Scroll handling (same logic: sticky when offset > 40)
+  // Scroll handling with hysteresis to prevent flicker:
+  // - becomes sticky when offset > _stickThreshold
+  // - becomes non-sticky when offset < _unstickThreshold
+  static const double _stickThreshold = 60.0;
+  static const double _unstickThreshold = 40.0;
+
   void updateScrollOffset(double offset) {
-    final shouldStick = offset > 40;
-    if (shouldStick == state.isSticky) return;
-    state = state.copyWith(isSticky: shouldStick);
+    final shouldStick = offset > _stickThreshold;
+    final shouldUnstick = offset < _unstickThreshold;
+
+    if (shouldStick && !state.isSticky) {
+      state = state.copyWith(isSticky: true);
+    } else if (shouldUnstick && state.isSticky) {
+      state = state.copyWith(isSticky: false);
+    }
+    // Otherwise keep the current state (hysteresis avoids immediate toggles)
   }
 
   // Notifications

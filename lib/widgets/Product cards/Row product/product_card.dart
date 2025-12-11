@@ -77,11 +77,11 @@ class ProductCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 6),
-                if (product.sale_price != null)
+                if (product.regular_price != null)
                   Flexible(
                     fit: FlexFit.loose,
                     child: Text(
-                      '${product.currencySymbol}${product.sale_price!.toStringAsFixed(2)}',
+                      '${product.currencySymbol}${product.regular_price!.toStringAsFixed(2)}',
                       style: const TextStyle(fontSize: 12, decoration: TextDecoration.lineThrough, color: Colors.grey),
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -96,7 +96,7 @@ class ProductCard extends StatelessWidget {
                    size: 16,
                 ),
                 const SizedBox(width: 8),
-                Text('${product.sold} sold', style: const TextStyle(fontSize: 12, color: Colors.grey)),
+                Text('|${product.sold} sold', style: const TextStyle(fontSize: 12, color: Colors.black)),
               ],
             )
           ],

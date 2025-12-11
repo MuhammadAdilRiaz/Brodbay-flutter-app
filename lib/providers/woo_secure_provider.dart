@@ -12,7 +12,7 @@ final wooSecureProvider = Provider<WooSecure>((ref) {
 
 
 class WooSecureConfig {
-  static const String baseUrl = 'https://brodbay.co.uk/wp-json/wc/v3/products';
+  static const String baseUrl = 'https://brodbay.co.uk/wp-json/wc/store/products';
   static const String consumerKey = 'ck_6c90af34e3403f099e41885bf870a08ddc720e18';
   static const String consumerSecret = 'cs_e18f1b6e3961481cb97a93f2b44fb405fc94a6db';
 }
@@ -24,7 +24,7 @@ class WooSecure {
 
   /// Returns the raw http.Response so calling code can inspect status/body
   Future<http.Response> getProducts({int perPage = 20, int page = 1}) async {
-    final uri = Uri.parse('${WooSecureConfig.baseUrl}/products').replace(
+    final uri = Uri.parse('${WooSecureConfig.baseUrl}').replace(
       queryParameters: {
         'per_page': perPage.toString(),
         'page': page.toString(),

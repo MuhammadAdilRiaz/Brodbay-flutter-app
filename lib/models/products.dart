@@ -1,13 +1,24 @@
+// File: lib/models/product.dart
+//
+// Updates:
+// - Add `regular_price` to model so UI can show original price (crossed out)
+// - Keep `sale_price` representing an explicit sale value when different
+// - Ensure `regular_price` is null when it matches current `price`
+// - Parse `sold` as "<number>sold" using total_sales first, otherwise extract digits from stock_availability.text
+// - All other parsing behavior remains defensive and compatible with previous changes
+
+import 'dart:math';
 
 class Product {
   final String id;
   final String imageUrl;
   final List<String> images; // list of image urls (different colors)
   final String title;
-  final double price;
-  final double? sale_price;
+  final double price; // current price (displayed as active price)
+  final double? sale_price; // explicit sale price (nullable)
+  final double? regular_price; // original price (nullable) — used for strike-through in UI
   final double average_rating;
-  final String sold;
+  final String sold; // e.g. "50sold"
   final String description;
   final String currencySymbol; // e.g. £ or $ or PKR
 
@@ -18,6 +29,7 @@ class Product {
     required this.title,
     required this.price,
     this.sale_price,
+    this.regular_price,
     required this.average_rating,
     required this.sold,
     required this.description,
@@ -58,32 +70,129 @@ class Product {
       return double.tryParse(v.toString()) ?? 0.0;
     }
 
-    final priceVal = parseDouble(json['price']);
-    final salepriceVal = json.containsKey('sale_price') ? (json['sale_price'] == null ? null : parseDouble(json['sale_price'])) : null;
-    final ratingVal = parseDouble(json['average_rating']);
-
-
-    // optional: try to read currency symbol from incoming payload if present
-    String currencySym = '£';
-    if (json.containsKey('currency') && (json['currency'] is String) && json['currency'].toString().isNotEmpty) {
-      final cur = json['currency'].toString().toUpperCase();
-      // a small mapping, extend as required
-      if (cur == 'GBP' || cur == '£') currencySym = '£';
-      else if (cur == 'USD' || cur == '\$') currencySym = '\$';
-      else if (cur == 'PKR') currencySym = 'PKR';
-      else currencySym = cur; // fallback show value
+    int parseInt(dynamic v) {
+      if (v == null) return 0;
+      if (v is int) return v;
+      if (v is num) return v.toInt();
+      return int.tryParse(v.toString()) ?? 0;
     }
+
+    // --- Prices are nested under `prices` in the API sample ---
+    double finalPrice = 0.0;
+    double? finalSalePrice;
+    double? finalRegularPrice;
+    String currencySym = '£';
+    int minorUnit = 2; // default fallback
+
+    try {
+      final p = json['prices'];
+      if (p is Map) {
+        // raw values may be strings representing minor units, e.g. "1833"
+        final rawPrice = p['price'];
+        final rawSale = p['sale_price'];
+        final rawRegular = p['regular_price'];
+        minorUnit = parseInt(p['currency_minor_unit'] ?? p['currency_minor'] ?? 2);
+
+        // safe parse of minor-unit prices
+        double minorPrice = 0.0;
+        if (rawPrice != null && rawPrice.toString().isNotEmpty) {
+          minorPrice = parseDouble(rawPrice);
+        }
+        double minorSale = double.nan;
+        if (rawSale != null && rawSale.toString().isNotEmpty) {
+          minorSale = parseDouble(rawSale);
+        }
+        double minorRegular = double.nan;
+        if (rawRegular != null && rawRegular.toString().isNotEmpty) {
+          minorRegular = parseDouble(rawRegular);
+        }
+
+        final divisor = pow(10, minorUnit).toDouble();
+        if (divisor > 0) {
+          finalPrice = minorPrice / divisor;
+          if (!minorSale.isNaN) finalSalePrice = minorSale / divisor;
+          if (!minorRegular.isNaN) finalRegularPrice = minorRegular / divisor;
+        } else {
+          finalPrice = minorPrice;
+          if (!minorSale.isNaN) finalSalePrice = minorSale;
+          if (!minorRegular.isNaN) finalRegularPrice = minorRegular;
+        }
+
+        // currency symbol preference from payload
+        if (p['currency_symbol'] != null && p['currency_symbol'].toString().isNotEmpty) {
+          currencySym = p['currency_symbol'].toString();
+        } else if (p['currency_prefix'] != null && p['currency_prefix'].toString().isNotEmpty) {
+          currencySym = p['currency_prefix'].toString();
+        } else if (p['currency_code'] != null && p['currency_code'].toString().isNotEmpty) {
+          currencySym = p['currency_code'].toString();
+        }
+      } else {
+        // fallback: top-level price keys (older APIs)
+        final priceVal = parseDouble(json['price']);
+        final saleVal = json.containsKey('sale_price') ? (json['sale_price'] == null ? null : parseDouble(json['sale_price'])) : null;
+        final regularVal = json.containsKey('regular_price') ? (json['regular_price'] == null ? null : parseDouble(json['regular_price'])) : null;
+        finalPrice = priceVal;
+        finalSalePrice = saleVal;
+        finalRegularPrice = regularVal;
+        if (json.containsKey('currency') && json['currency'] != null) currencySym = json['currency'].toString();
+      }
+    } catch (_) {
+      // leave defaults
+    }
+
+    // If regular_price equals current price, hide it (avoid showing identical crossed price)
+    if (finalRegularPrice != null && (finalRegularPrice - finalPrice).abs() < 0.0001) {
+      finalRegularPrice = null;
+    }
+
+    // If sale_price equals current price, null it so UI won't show duplicate
+    if (finalSalePrice != null && (finalSalePrice - finalPrice).abs() < 0.0001) {
+      finalSalePrice = null;
+    }
+
+    // ratings and review count
+    final ratingVal = parseDouble(json['average_rating'] ?? json['rating'] ?? 0);
+
+    // sold / total sales mapping - prefer total_sales numeric value
+    String soldText = '';
+    try {
+      if (json.containsKey('total_sales') && json['total_sales'] != null && json['total_sales'].toString().isNotEmpty) {
+        final ts = parseInt(json['total_sales']);
+        soldText = '${ts}sold';
+      } else if (json.containsKey('sold') && json['sold'] != null && json['sold'].toString().isNotEmpty) {
+        final ts = parseInt(json['sold']);
+        soldText = '${ts}sold';
+      } else if (json['stock_availability'] is Map && json['stock_availability']['text'] != null) {
+        // attempt to extract digits from "50 in stock" or similar
+        final txt = json['stock_availability']['text'].toString();
+        final match = RegExp(r'(\d+)').firstMatch(txt);
+        if (match != null) {
+          soldText = '${match.group(1)}';
+        } else {
+          soldText = '';
+        }
+      } else {
+        soldText = '';
+      }
+    } catch (_) {
+      soldText = '';
+    }
+
+    // description/title mapping (prefer name / title)
+    final titleVal = (json['title'] ?? json['name'] ?? '').toString();
+    final descVal = (json['description'] ?? json['short_description'] ?? '').toString();
 
     return Product(
       id: json['id']?.toString() ?? '',
       imageUrl: primaryImage,
       images: parsedImages,
-      title: json['title'] ?? json['name'] ?? '',
-      price: priceVal,
-      sale_price: salepriceVal,
-     average_rating: ratingVal,
-      sold: json['sold']?.toString() ?? json['total_sales']?.toString() ?? '',
-      description: json['description']?.toString() ?? '',
+      title: titleVal,
+      price: finalPrice,
+      sale_price: finalSalePrice,
+      regular_price: finalRegularPrice,
+      average_rating: ratingVal,
+      sold: soldText,
+      description: descVal,
       currencySymbol: currencySym,
     );
   }
@@ -96,6 +205,7 @@ class Product {
       'title': title,
       'price': price,
       'sale_price': sale_price,
+      'regular_price': regular_price,
       'rating': average_rating,
       'sold': sold,
       'description': description,

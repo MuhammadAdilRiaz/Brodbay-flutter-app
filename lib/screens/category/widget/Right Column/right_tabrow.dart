@@ -1,11 +1,9 @@
-import 'package:brodbay/providers/category_provider.dart';
+import 'package:brodbay/models/products.dart';
+import 'package:brodbay/widgets/Product%20cards/Row%20product/product_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../models/products.dart';
-import '../../../../widgets/Product cards/Row product/product_card.dart';
 
 class CategoryTabsScreen extends ConsumerWidget {
-  // Provide products from parent. If null, an empty list is used.
   final List<Product>? products;
   final int? selectedCategoryIndex;
 
@@ -17,19 +15,18 @@ class CategoryTabsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedIndex = selectedCategoryIndex ??
-        ref.watch(categoryNotifierProvider.select((s) => s.selectedIndex));
+    final productList = products ?? <Product>[];
 
-    // Use passed products or fallback to empty list
-    final List<Product> productList = products ?? <Product>[];
+    if (productList.isEmpty) {
+      return const Center(child: Text('No products found'));
+    }
 
     return Column(
       children: [
         const SizedBox(height: 10),
-
         Expanded(
           child: GridView.builder(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
             gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
               maxCrossAxisExtent: 180,
               childAspectRatio: 0.60,
