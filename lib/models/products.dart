@@ -1,11 +1,5 @@
 // File: lib/models/product.dart
-//
-// Updates:
-// - Add `regular_price` to model so UI can show original price (crossed out)
-// - Keep `sale_price` representing an explicit sale value when different
-// - Ensure `regular_price` is null when it matches current `price`
-// - Parse `sold` as "<number>sold" using total_sales first, otherwise extract digits from stock_availability.text
-// - All other parsing behavior remains defensive and compatible with previous changes
+
 
 import 'dart:math';
 

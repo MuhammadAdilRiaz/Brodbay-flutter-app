@@ -2,7 +2,6 @@ import 'package:brodbay/providers/category_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-
 class RecommendedSection extends ConsumerWidget {
   const RecommendedSection({super.key});
 
@@ -11,7 +10,8 @@ class RecommendedSection extends ConsumerWidget {
     final categories = ref.watch(filteredCategoriesProvider);
 
     // Use up to 6 categories
-    final recommended = categories.length > 6 ? categories.sublist(0, 6) : categories;
+    final recommended =
+        categories.length > 6 ? categories.sublist(0, 6) : categories;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -29,19 +29,28 @@ class RecommendedSection extends ConsumerWidget {
             height: 80,
             child: Center(child: Text("No recommendations available")),
           )
+
         else
           SizedBox(
-            height: 110,
-            child: ListView.separated(
-              scrollDirection: Axis.horizontal,
+            child: GridView.builder(
+              shrinkWrap: true,                   // <-- FIX
+              physics: const NeverScrollableScrollPhysics(),
               padding: const EdgeInsets.symmetric(horizontal: 10),
+            
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,         // 3 items per row
+                mainAxisSpacing: 12,       // same spacing as ListView.separated
+                crossAxisSpacing: 12,
+                childAspectRatio: 0.65,    // controls height of each card (tweak if needed)
+              ),
+
               itemCount: recommended.length,
-              separatorBuilder: (_, __) => const SizedBox(width: 12),
               itemBuilder: (context, index) {
                 final cat = recommended[index];
                 final hasImage = cat.image.isNotEmpty;
 
                 return Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     SizedBox(
                       width: 80,
@@ -52,15 +61,17 @@ class RecommendedSection extends ConsumerWidget {
                             ? Image.network(
                                 cat.image,
                                 fit: BoxFit.cover,
-                                errorBuilder: (context, e, st) => const Icon(Icons.broken_image, size: 40),
+                                errorBuilder: (context, e, st) =>
+                                    const Icon(Icons.broken_image, size: 40),
                                 loadingBuilder: (context, child, progress) {
                                   if (progress == null) return child;
-                                  return const Center(child: CircularProgressIndicator(strokeWidth: 2));
+                                  return const Center(
+                                      child: CircularProgressIndicator(
+                                          strokeWidth: 2));
                                 },
                               )
                             : Container(
                                 color: Colors.grey.shade300,
-                                child: const Icon(Icons.category, size: 40),
                               ),
                       ),
                     ),

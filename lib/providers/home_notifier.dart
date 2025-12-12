@@ -1,5 +1,7 @@
 // lib/providers/home_notifier.dart
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:brodbay/providers/category_provider.dart';
+import 'package:brodbay/models/category_model.dart';
 
 class HomeState {
   final bool isSticky;
@@ -7,7 +9,7 @@ class HomeState {
   final String query;
   final bool isFocused;
   final int currentIndex;
-  final List<String> categories;
+  final List<String> categories; 
 
   const HomeState({
     this.isSticky = false,
@@ -15,14 +17,7 @@ class HomeState {
     this.query = '',
     this.isFocused = false,
     this.currentIndex = 0,
-    this.categories = const [
-      'Electronics',
-      'Fashion',
-      'Home',
-      'Beauty',
-      'Toys',
-      'Sports',
-    ],
+    this.categories = const [], 
   });
 
   HomeState copyWith({
@@ -45,11 +40,12 @@ class HomeState {
 }
 
 class HomeNotifier extends StateNotifier<HomeState> {
-  HomeNotifier([HomeState? initial]) : super(initial ?? const HomeState());
+  final Ref ref;
 
-  // Scroll handling with hysteresis to prevent flicker:
-  // - becomes sticky when offset > _stickThreshold
-  // - becomes non-sticky when offset < _unstickThreshold
+  HomeNotifier(this.ref, [HomeState? initial]) : super(initial ?? const HomeState()) {
+    _loadCategoriesFromApi();
+  }
+
   static const double _stickThreshold = 60.0;
   static const double _unstickThreshold = 40.0;
 
@@ -62,10 +58,9 @@ class HomeNotifier extends StateNotifier<HomeState> {
     } else if (shouldUnstick && state.isSticky) {
       state = state.copyWith(isSticky: false);
     }
-    // Otherwise keep the current state (hysteresis avoids immediate toggles)
   }
 
-  // Notifications
+  
   void increaseNotification() {
     state = state.copyWith(notificationCount: state.notificationCount + 1);
   }
@@ -90,14 +85,42 @@ class HomeNotifier extends StateNotifier<HomeState> {
     state = state.copyWith(isFocused: value);
   }
 
-  // Tab row
+ 
   void setIndex(int index) {
     if (index == state.currentIndex) return;
+
+  
     state = state.copyWith(currentIndex: index);
+
+   
+    try {
+      ref.read(categoryNotifierProvider.notifier).selectCategory(index + 1);
+    } catch (_) {
+      
+    }
+  }
+
+ 
+  Future<void> _loadCategoriesFromApi() async {
+    try {
+      final api = ref.read(categoryApiProvider);
+      final List<CategoryModel> list = await api.fetchCategories();
+
+      if (list.isNotEmpty) {
+        final names = list.map((c) => c.name).toList();
+        state = state.copyWith(categories: names);
+      } else {
+        
+        state = state.copyWith(categories: []);
+      }
+    } catch (e) {
+      // keep categories empty on error; optionally log
+      // print('HomeNotifier: failed to load categories: $e');
+    }
   }
 }
 
 final homeNotifierProvider =
     StateNotifierProvider<HomeNotifier, HomeState>((ref) {
-  return HomeNotifier();
+  return HomeNotifier(ref);
 });

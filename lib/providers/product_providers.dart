@@ -1,4 +1,6 @@
 // lib/providers/product_providers.dart
+import 'dart:math';
+
 import 'package:brodbay/services/ProductServices/product_services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/products.dart';
@@ -105,4 +107,80 @@ final filteredProductsProvider = Provider<List<Product>>((ref) {
     },
     orElse: () => <Product>[],
   );
+});
+
+//
+// Product row helpers and derived providers (progressive "view more" increments)
+//
+
+const int _productRowLimit = 10;
+
+/// Config holder for product row behavior.
+class ProductRowConfig {
+  final int limit;
+  ProductRowConfig({this.limit = _productRowLimit});
+}
+
+final productRowConfigProvider = Provider<ProductRowConfig>((ref) {
+  return ProductRowConfig(limit: _productRowLimit);
+});
+
+/// Visible count state: how many items the row should currently show.
+/// Default is `limit` (10). Each "view more" tap increments this by `limit`.
+final productRowVisibleCountProvider = StateProvider<int>((ref) => _productRowLimit);
+
+/// Sale detection adapted to your Product model
+bool _productHasSale(Product p) {
+  try {
+    // explicit sale price that is lower than current price
+    if (p.sale_price != null && p.sale_price! < p.price) return true;
+
+    // legacy regular price greater than current price
+    if (p.regular_price != null && p.regular_price! > p.price) return true;
+
+    // fallback: if sale_price exists even if equal, consider it a sale candidate
+    if (p.sale_price != null) return true;
+  } catch (_) {
+    // ignore parse errors and return false
+  }
+  return false;
+}
+
+/// Provider that returns the "source" list for the horizontal row:
+/// try sale-filtered list first, fallback to full product list
+final productsRowSourceProvider = Provider<List<Product>>((ref) {
+  final async = ref.watch(productsListProvider);
+
+  return async.maybeWhen(
+    data: (list) {
+      final saleList = list.where((p) => _productHasSale(p)).toList();
+      if (saleList.isNotEmpty) return saleList;
+      return list;
+    },
+    orElse: () => <Product>[],
+  );
+});
+
+/// Metadata about the row: totalCount and whether there are more than the current visibleCount.
+class ProductsRowMeta {
+  final int totalCount;
+  final bool hasMore; // more items are available beyond visibleCount
+  ProductsRowMeta({required this.totalCount, required this.hasMore});
+}
+
+final productsRowMetaProvider = Provider<ProductsRowMeta>((ref) {
+  final src = ref.watch(productsRowSourceProvider);
+  final visibleCount = ref.watch(productRowVisibleCountProvider);
+  final total = src.length;
+  final hasMore = total > visibleCount;
+  return ProductsRowMeta(totalCount: total, hasMore: hasMore);
+});
+
+/// Final provider UI should watch. Honors visible count state and limit increments.
+final visibleProductsProvider = Provider<List<Product>>((ref) {
+  final src = ref.watch(productsRowSourceProvider);
+  final visibleCount = ref.watch(productRowVisibleCountProvider);
+  // clamp to available length
+  final int takeCount = min(visibleCount, src.length);
+  return src.take(takeCount).toList();
 });
