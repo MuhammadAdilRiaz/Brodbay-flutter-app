@@ -74,8 +74,6 @@ class CartScreen extends ConsumerWidget {
       ),
     ),
 
-  
-    // Masonry grid (adaptive height cards)
     SliverPadding(
   padding: const EdgeInsets.symmetric(horizontal: 12),
   sliver: SliverMasonryGrid.count(
@@ -99,7 +97,6 @@ class CartScreen extends ConsumerWidget {
     },
   ),
 ),
-
 
           const SliverToBoxAdapter(
             child: SizedBox(height: 120),

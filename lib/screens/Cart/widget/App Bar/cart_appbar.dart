@@ -10,7 +10,6 @@ class CartAppbar extends StatelessWidget {
         Row(
           children: [
             IconButton(onPressed: (){}, icon: Icon(Icons.arrow_back_ios_new)),
-            const Spacer(),
           Center(
             child: Text("Cart", 
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),

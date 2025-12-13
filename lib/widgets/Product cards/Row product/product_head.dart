@@ -146,7 +146,6 @@ class ProductHead extends ConsumerWidget {
                     );
                   }
 
-
                   final Product p = visible[index];
                   return Container(
                     width: widthLimit,

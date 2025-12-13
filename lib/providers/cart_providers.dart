@@ -7,3 +7,6 @@ final cartProvider =
     StateNotifierProvider<CartNotifier, List<CartItem>>(
   (ref) => CartNotifier(),
 );
+
+
+

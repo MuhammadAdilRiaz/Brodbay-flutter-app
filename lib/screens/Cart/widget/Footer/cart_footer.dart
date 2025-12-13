@@ -15,6 +15,7 @@ class CartFooter extends ConsumerWidget {
             0, (sum, item) => sum + item.price * item.quantity);
 
     return Container(
+      color: Color(0xFFFF6304),
       padding: const EdgeInsets.all(16),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
