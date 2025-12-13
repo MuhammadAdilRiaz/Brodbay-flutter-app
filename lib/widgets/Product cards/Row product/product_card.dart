@@ -1,17 +1,20 @@
 // lib/widgets/product_card.dart
 import 'package:brodbay/models/products.dart';
+import 'package:brodbay/utils/cart_action.dart';
 import 'package:brodbay/widgets/common/rating_star.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ProductCard extends StatelessWidget {
   final Product product;
   final VoidCallback? onTap;
 
+
   const ProductCard({super.key, required this.product, this.onTap});
 
   @override
-  Widget build(BuildContext context) {
-    // Decide which image URL to use
+  Widget build(BuildContext context, ) {
+
     final primary = (product.imageUrl.isNotEmpty)
         ? product.imageUrl
         : (product.images.isNotEmpty ? product.images.first : '');
@@ -27,7 +30,6 @@ class ProductCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // network image or placeholder
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: AspectRatio(
@@ -86,6 +88,7 @@ class ProductCard extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
+                  
               ],
             ),
             const SizedBox(height: 6),
@@ -97,6 +100,35 @@ class ProductCard extends StatelessWidget {
                 ),
                 const SizedBox(width: 8),
                 Text('|${product.sold} sold', style: const TextStyle(fontSize: 12, color: Colors.black)),
+                const SizedBox(width: 16),
+               /// Responsive Add to Cart Button
+    Consumer(
+  builder: (context, ref, _) {
+    return InkWell(
+      borderRadius: BorderRadius.circular(50),
+      onTap: () {
+        handleAddToCart(
+          context: context,
+          ref: ref,
+          product: product,
+        );
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8),
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.black),
+          borderRadius: BorderRadius.circular(50),
+        ),
+        child: const Icon(
+          Icons.shopping_cart_outlined,
+          size: 20,
+          color: Colors.black,
+        ),
+      ),
+    );
+  },
+),
+
               ],
             )
           ],

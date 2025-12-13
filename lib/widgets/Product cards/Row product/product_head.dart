@@ -97,8 +97,8 @@ class ProductHead extends ConsumerWidget {
                           final next = min(currentVisibleCount + cfg.limit, meta.totalCount);
                           ref.read(productRowVisibleCountProvider.notifier).state = next;
                         },
-                        child: Card(
-                          color: Colors.white,
+                       
+                         
                           child: Center(
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
@@ -113,7 +113,7 @@ class ProductHead extends ConsumerWidget {
                               ),
                             ),
                           ),
-                        ),
+                        
                       ),
                     );
                   }
@@ -126,8 +126,7 @@ class ProductHead extends ConsumerWidget {
                         onTap: () {
                           ref.read(productRowVisibleCountProvider.notifier).state = cfg.limit;
                         },
-                        child: Card(
-                          color: Colors.white,
+                     
                           child: Center(
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
@@ -142,7 +141,7 @@ class ProductHead extends ConsumerWidget {
                               ),
                             ),
                           ),
-                        ),
+                       
                       ),
                     );
                   }

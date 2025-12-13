@@ -1,20 +1,18 @@
 // File: lib/models/product.dart
-
-
 import 'dart:math';
 
 class Product {
   final String id;
   final String imageUrl;
-  final List<String> images; // list of image urls (different colors)
+  final List<String> images; 
   final String title;
-  final double price; // current price (displayed as active price)
-  final double? sale_price; // explicit sale price (nullable)
-  final double? regular_price; // original price (nullable) — used for strike-through in UI
+  final double price; 
+  final double? sale_price; 
+  final double? regular_price; 
   final double average_rating;
-  final String sold; // e.g. "50sold"
+  final String sold; 
   final String description;
-  final String currencySymbol; // e.g. £ or $ or PKR
+  final String currencySymbol; 
 
   Product({
     required this.id,
