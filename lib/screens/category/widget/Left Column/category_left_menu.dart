@@ -10,7 +10,8 @@ class CategoryLeftMenu extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedIndex =
         ref.watch(categoryNotifierProvider.select((s) => s.selectedIndex));
-    final categories = ref.watch(categoryNotifierProvider.select((s) => s.categories));
+final categories =
+    ref.watch(categoryNotifierProvider.select((s) => s.mainCategories));
 
     final totalItems = 1 + categories.length;
 

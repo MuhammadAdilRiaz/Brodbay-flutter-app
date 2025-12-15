@@ -1,17 +1,11 @@
 // lib/widgets/category_search_bar.dart
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../providers/category_provider.dart';
 
-class CategorySearchBar extends ConsumerWidget {
+class CategorySearchBar extends StatelessWidget {
   const CategorySearchBar({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    // If you want to show current query as initial value, you can:
-    final query = ref.watch(categoryNotifierProvider.select((s) => s.searchQuery));
-    final controller = TextEditingController(text: query);
-
+  Widget build(BuildContext context) {
     return Container(
       height: 40,
       padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -24,17 +18,13 @@ class CategorySearchBar extends ConsumerWidget {
         children: [
           const Icon(Icons.camera_alt_rounded, size: 20),
           const SizedBox(width: 10),
-          Expanded(
+          const Expanded(
             child: TextField(
-              controller: controller,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 hintText: "Search Now",
                 border: InputBorder.none,
                 isDense: true,
               ),
-              onChanged: (value) {
-                ref.read(categoryNotifierProvider.notifier).setSearchQuery(value);
-              },
             ),
           ),
           Container(

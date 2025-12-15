@@ -1,7 +1,8 @@
-import 'package:brodbay/models/products.dart';
-import 'package:brodbay/widgets/Product%20cards/Row%20product/product_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:brodbay/models/products.dart';
+import 'package:brodbay/widgets/Product cards/Row product/product_card.dart';
 
 class CategoryTabsScreen extends ConsumerWidget {
   final List<Product>? products;
@@ -15,32 +16,39 @@ class CategoryTabsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final productList = products ?? <Product>[];
+    final productList = products ?? [];
 
     if (productList.isEmpty) {
       return const Center(child: Text('No products found'));
     }
 
-    return Column(
-      children: [
-        const SizedBox(height: 10),
-        Expanded(
-          child: GridView.builder(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: 180,
-              childAspectRatio: 0.60,
-              crossAxisSpacing: 8,
-              mainAxisSpacing: 8,
-            ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        
+        final double availableWidth = constraints.maxWidth;
+
+        // Decide columns based on right panel width
+        int crossAxisCount = 2; // default for medium screens
+
+        if (availableWidth >= 900) {
+          crossAxisCount = 3; // large screens
+        }
+
+        return Padding(
+          padding: const EdgeInsets.only(top: 8),
+          child: MasonryGridView.count(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+            crossAxisCount: crossAxisCount,
+            mainAxisSpacing: 12,
+            crossAxisSpacing: 12,
             itemCount: productList.length,
             itemBuilder: (context, index) {
               final product = productList[index];
               return ProductCard(product: product);
             },
           ),
-        ),
-      ],
+        );
+      },
     );
   }
 }

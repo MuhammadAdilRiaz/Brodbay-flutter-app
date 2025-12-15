@@ -102,22 +102,21 @@ class HomeNotifier extends StateNotifier<HomeState> {
 
  
   Future<void> _loadCategoriesFromApi() async {
-    try {
-      final api = ref.read(categoryApiProvider);
-      final List<CategoryModel> list = await api.fetchCategories();
+  try {
+    final api = ref.read(categoryApiProvider);
+    final List<CategoryModel> list = await api.fetchCategories();
 
-      if (list.isNotEmpty) {
-        final names = list.map((c) => c.name).toList();
-        state = state.copyWith(categories: names);
-      } else {
-        
-        state = state.copyWith(categories: []);
-      }
-    } catch (e) {
-      // keep categories empty on error; optionally log
-      // print('HomeNotifier: failed to load categories: $e');
-    }
+    // MAIN categories only (parent == 0)
+    final mainCategories = list.where((c) => c.parent == 0).toList();
+
+    state = state.copyWith(
+      categories: mainCategories.map((c) => c.name).toList(),
+    );
+  } catch (e) {
+    // keep categories empty on error
   }
+}
+
 }
 
 final homeNotifierProvider =

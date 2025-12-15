@@ -1,9 +1,4 @@
 // File: lib/services/products_notifier.dart
-//
-// Fixed fields:
-// - Use the unified WooSecure client (query param auth)
-// - Defensive parsing and clearer error messages
-// - Preserve AsyncNotifier pattern and refresh behavior
 
 import 'dart:convert';
 import 'package:brodbay/models/products.dart';
