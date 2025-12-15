@@ -24,7 +24,7 @@ class TabRow extends ConsumerWidget {
       );
     }
        final displayCount = labels.length > 8 ? 8 : labels.length;
-    final displayLabels = labels.sublist(0, displayCount);
+       final displayLabels = labels.sublist(0, displayCount);
 
     
     return Container(

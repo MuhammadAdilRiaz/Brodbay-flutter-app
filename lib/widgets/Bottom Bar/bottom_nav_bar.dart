@@ -12,7 +12,7 @@ class BottomNavBar extends ConsumerWidget {
   static const List<Widget> _screens = <Widget>[
     HomeScreen(),
     CategoryScreen(),
-    CartScreen(),
+   
     ProfileScreen(),
   ];
 
@@ -20,37 +20,57 @@ class BottomNavBar extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final currentIndex = ref.watch(bottomNavProvider);
 
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: IndexedStack(
-        index: currentIndex,
-        children: _screens,
+    return WillPopScope(
+  onWillPop: () async {
+    if (currentIndex != 0) {
+      ref.read(bottomNavProvider.notifier).setIndex(0);
+      return false;
+    }
+    return true;
+  },
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: IndexedStack(
+         index: currentIndex > 2 ? currentIndex - 1 : currentIndex,
+          children: _screens,
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: currentIndex,
+          type: BottomNavigationBarType.fixed,
+          selectedItemColor: const Color(0xFFFF6304),
+          unselectedItemColor: Colors.grey,
+          onTap: (index) {
+  if (index == 2) {
+    // Cart tapped → open full screen
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => const CartScreen(),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: currentIndex,
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: const Color(0xFFFF6304),
-        unselectedItemColor: Colors.grey,
-        onTap: (index) =>
-            ref.read(bottomNavProvider.notifier).setIndex(index),
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.category_outlined),
-            label: 'Categories',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart_outlined),
-            label: 'Cart',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_2_outlined),
-            label: 'User',
-          ),
-        ],
+    );
+  } else {
+    ref.read(bottomNavProvider.notifier).setIndex(index);
+  }
+},
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home_outlined),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.category_outlined),
+              label: 'Categories',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.shopping_cart_outlined),
+              label: 'Cart',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person_2_outlined),
+              label: 'User',
+            ),
+          ],
+        ),
       ),
     );
   }

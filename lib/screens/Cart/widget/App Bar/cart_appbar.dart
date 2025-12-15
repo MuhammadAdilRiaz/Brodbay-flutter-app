@@ -5,18 +5,19 @@ class CartAppbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Row(
+    return SizedBox(
+      child:   Row(
           children: [
             IconButton(onPressed: (){}, icon: Icon(Icons.arrow_back_ios_new)),
-          Center(
-            child: Text("Cart", 
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+          Expanded(
+            child: Center(
+              child: Text("Cart", 
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+            ),
           ),
          
         ],)
-      ],
+   
     );
   }
 }

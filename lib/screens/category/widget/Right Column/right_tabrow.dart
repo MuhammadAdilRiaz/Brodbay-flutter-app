@@ -44,7 +44,8 @@ class CategoryTabsScreen extends ConsumerWidget {
             itemCount: productList.length,
             itemBuilder: (context, index) {
               final product = productList[index];
-              return ProductCard(product: product);
+              return ProductCard(product: product,
+               layout: ProductCardLayout.category,);
             },
           ),
         );

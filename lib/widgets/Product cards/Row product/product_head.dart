@@ -49,6 +49,7 @@ class ProductHead extends ConsumerWidget {
       final p = list[index];
       return ProductCard(
         product: p,
+        layout: ProductCardLayout.home,
         onTap: () => Navigator.push(
           context,
           MaterialPageRoute(builder: (_) => ProductDetailScreen(product: p)),
@@ -152,6 +153,7 @@ class ProductHead extends ConsumerWidget {
                     margin: const EdgeInsets.symmetric(horizontal: 2),
                     child: ProductCard(
                       product: p,
+                       layout: ProductCardLayout.category,
                       onTap: () => Navigator.push(
                         context,
                         MaterialPageRoute(builder: (_) => ProductDetailScreen(product: p)),
