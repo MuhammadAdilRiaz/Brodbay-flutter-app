@@ -8,9 +8,7 @@ class RecommendedSection extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // This provider already handles:
-    // ForYou  -> all sub categories
-    // MainCat -> sub categories of selected main
+    
     final List<CategoryModel> subCategories =
         ref.watch(visibleSubCategoriesProvider);
 

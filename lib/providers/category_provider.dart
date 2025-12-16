@@ -126,6 +126,8 @@ class CategoryNotifier extends StateNotifier<CategoryState> {
   }
 }
 
+
+
 /* ───────────────────────
    DERIVED PROVIDERS
 ──────────────────────── */

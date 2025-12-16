@@ -14,6 +14,8 @@ class Product {
   final String description;
   final String currencySymbol; 
 
+  
+
   Product({
     required this.id,
     required this.imageUrl,
@@ -169,6 +171,7 @@ class Product {
     } catch (_) {
       soldText = '';
     }
+   
 
     // description/title mapping (prefer name / title)
     final titleVal = (json['title'] ?? json['name'] ?? '').toString();

@@ -1,10 +1,12 @@
 // lib/screens/home_screen.dart
 import 'dart:math';
 import 'dart:ui';
+import 'package:brodbay/providers/category_provider.dart';
+import 'package:brodbay/screens/home/widgets/sub%20category%20tab%20row/grid_productcard.dart';
+import 'package:brodbay/screens/home/widgets/sub%20category%20tab%20row/sub_tabrow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/services.dart';
-
 import '../../widgets/Product cards/Row product/product_head.dart';
 import '../../providers/home_notifier.dart';
 import 'widgets/App Bar/app_bar.dart';
@@ -76,6 +78,10 @@ static const double _fixedOverlayPixels = 110.0; // change this value if using f
   Widget build(BuildContext context) {
     final isSticky = ref.watch(homeNotifierProvider.select((s) => s.isSticky));
     final double statusBarHeight = MediaQuery.of(context).padding.top;
+    final selectedIndex = ref.watch(categoryNotifierProvider.select((s) => s.selectedIndex));
+   
+
+
 
    
     final double headerHeight =
@@ -99,27 +105,28 @@ static const double _fixedOverlayPixels = 110.0; // change this value if using f
         body: Stack(
           children: [
          
-            AnimatedContainer(
-              duration: const Duration(milliseconds: 300),
-              height: isSticky ? 0 : 380,
-              decoration: BoxDecoration(
-                color: isSticky ? Colors.transparent : null,
-                gradient: isSticky
-                    ? null
-                    : const LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
+           AnimatedContainer(
+             duration: const Duration(milliseconds: 300),
+               height: isSticky ? 0 : 380,
+                 decoration: selectedIndex == 0
+                 ? const BoxDecoration(
+                   gradient: LinearGradient(
+                   begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
                           Color(0xFFFF6304),
                           Color(0xFFFF7D26),
                           Color(0xFFFF944D),
                           Color(0xFFFFB380),
-                          Color(0xFFFFD1B3),
                           Color(0xFFFFFFFF),
-                        ],
-                      ),
-              ),
-            ),
+                          ],
+                         ),
+                         )
+                          : const BoxDecoration(
+                        color: Colors.white,
+                        ),
+                          ),
+
 
             CustomScrollView(
               controller: _scrollController,
@@ -129,16 +136,20 @@ static const double _fixedOverlayPixels = 110.0; // change this value if using f
                   child: SizedBox(height: headerHeight),
                 ),
 
-                const SliverToBoxAdapter(child: SaleBanner()),
-                const SliverToBoxAdapter(
-                  child: ProductHead(isVertical: false),
-                ),
-                const SliverToBoxAdapter(
-                  child: ProductHead(isVertical: true),
-                ),
-                // add other slivers/content as needed...
+                 if (selectedIndex == 0) ...[
+                  const SliverToBoxAdapter(child: SaleBanner()),
+                  const SliverToBoxAdapter(
+                      child: ProductHead(isVertical: false)),
+                  const SliverToBoxAdapter(
+                      child: ProductHead(isVertical: true)),
+                ] else ...[
+                  const SliverToBoxAdapter(child: SubCategoryTabRow()),
+                  const SliverToBoxAdapter(child: CategoryProductGrid()),
+                ],
               ],
             ),
+
+              
 
             Positioned(
               top: 0,
@@ -188,7 +199,7 @@ static const double _fixedOverlayPixels = 110.0; // change this value if using f
                     const CustomAppBar(),
 
                     SearchBarWidget(isSticky: isSticky),
-                    TabRow(isSticky: isSticky),
+                    MainCategoryTabRow(isSticky: isSticky),
                   ],
                 ),
               ),
