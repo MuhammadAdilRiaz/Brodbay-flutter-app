@@ -6,18 +6,36 @@ class CartAppbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      child:   Row(
-          children: [
-            IconButton(onPressed: (){}, icon: Icon(Icons.arrow_back_ios_new)),
-          Expanded(
-            child: Center(
-              child: Text("Cart", 
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+      height: kToolbarHeight, // 👈 minimum recommended height
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          /// Back button (left)
+          Positioned(
+            left: 0,
+            child: IconButton(
+              padding: EdgeInsets.zero, // 👈 removes extra height
+              constraints: const BoxConstraints(), // 👈 removes default size
+              icon: const Icon(
+                Icons.arrow_back_ios_new,
+                size: 18,
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
             ),
           ),
-         
-        ],)
-   
+
+          /// Center title
+          const Text(
+            "Cart",
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -11,6 +11,7 @@ class Product {
   final double? regular_price; 
   final double average_rating;
   final String sold; 
+  final int stock;
   final String description;
   final String currencySymbol; 
 
@@ -26,6 +27,7 @@ class Product {
     this.regular_price,
     required this.average_rating,
     required this.sold,
+     required this.stock,
     required this.description,
     this.currencySymbol = '£',
   });
@@ -171,6 +173,23 @@ class Product {
     } catch (_) {
       soldText = '';
     }
+
+    int stockQty = 0;
+
+try {
+  if (json.containsKey('stock_quantity') && json['stock_quantity'] != null) {
+    stockQty = parseInt(json['stock_quantity']);
+  } else if (json.containsKey('quantity') && json['quantity'] != null) {
+    stockQty = parseInt(json['quantity']);
+  } else if (json.containsKey('inventory') && json['inventory'] != null) {
+    stockQty = parseInt(json['inventory']);
+  } else {
+    stockQty = 0;
+  }
+} catch (_) {
+  stockQty = 0;
+}
+
    
 
     // description/title mapping (prefer name / title)
@@ -187,6 +206,7 @@ class Product {
       regular_price: finalRegularPrice,
       average_rating: ratingVal,
       sold: soldText,
+       stock: stockQty,
       description: descVal,
       currencySymbol: currencySym,
     );
@@ -203,6 +223,7 @@ class Product {
       'regular_price': regular_price,
       'rating': average_rating,
       'sold': sold,
+      'stock': stock,
       'description': description,
       'currency': currencySymbol,
     };

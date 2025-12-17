@@ -15,16 +15,14 @@ class CartFooter extends ConsumerWidget {
             0, (sum, item) => sum + item.price * item.quantity);
 
     return Container(
-      color: Color(0xFFFF6304),
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.only(top: 5, bottom: 2, left: 5, right: 5),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text("Total: \$${total.toStringAsFixed(2)}"),
-          ElevatedButton(
-            onPressed: () {},
-            child: const Text("Checkout"),
-          )
+          TextButton(onPressed: (){},
+           child: Text("Checkout", 
+           style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600,color: Colors.black),))
         ],
       ),
     );

@@ -11,16 +11,18 @@ void handleAddToCart({
   required Product product,
 }) {
   final cartNotifier = ref.read(cartProvider.notifier);
-  final alreadyInCart = cartNotifier.isInCart(product.id);
 
-  if (!alreadyInCart) {
-    cartNotifier.addOrIgnore(
+
+  if (!cartNotifier.isInCart(product.id)) {
+    cartNotifier.addItem(
       CartItem(
         id: product.id,
         title: product.title,
         image: product.imageUrl,
         price: product.price,
+        regular_price: product.regular_price,
         quantity: 1,
+        stock: product.stock,
         sellerId: 'default',
       ),
     );

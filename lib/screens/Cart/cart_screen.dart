@@ -19,8 +19,6 @@ class CartScreen extends ConsumerWidget {
     final isCartEmpty = cartItems.isEmpty;
     final products = ref.watch(filteredProductsProvider);
 
-
-
     return Scaffold(
       backgroundColor: Colors.white,
       body: CustomScrollView(
@@ -30,6 +28,7 @@ class CartScreen extends ConsumerWidget {
           SliverAppBar(
             pinned: true,
             toolbarHeight: 80,
+           automaticallyImplyLeading: false, 
             backgroundColor: Colors.white,
             elevation: 0,
             flexibleSpace: SafeArea(
@@ -46,7 +45,7 @@ class CartScreen extends ConsumerWidget {
                SliverToBoxAdapter(
                   child: isCartEmpty
                  ? const EmptyCartView()
-                : const SizedBox.shrink(),
+                 : const SizedBox.shrink(),
                  ),
 
                   if (!isCartEmpty)
@@ -60,19 +59,24 @@ class CartScreen extends ConsumerWidget {
                    childCount: cartItems.length,
                     ),
                        ),
+                       if (!isCartEmpty)
+                       const SliverToBoxAdapter(
+                       child: CartFooter(),
+                       ),
+
 
                         SliverToBoxAdapter(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
-        child: Text(
-          "You may also like",
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-    ),
+                        child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                        child: Text(
+                       "You May Also Like",
+                        style: TextStyle(
+                       fontSize: 16,
+                       fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                   ),
+                  ),
 
     SliverPadding(
   padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -103,9 +107,6 @@ class CartScreen extends ConsumerWidget {
           ),
         ],
       ),
-
-   
-      bottomNavigationBar: const CartFooter(),
     );
   }
 }
