@@ -118,7 +118,7 @@ class CartItemTile extends ConsumerWidget {
                   ),
                   const SizedBox(width: 6,),
 
-                        if (item.regular_price != null)
+                  if (item.regular_price != null)
                    Text(
                     '${item.currencySymbol}${item.regular_price!.toStringAsFixed(2)}',
                     style: const TextStyle(
