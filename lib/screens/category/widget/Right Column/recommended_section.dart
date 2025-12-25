@@ -59,15 +59,16 @@ class RecommendedSection extends ConsumerWidget {
               final hasImage = cat.image.isNotEmpty;
 
               return Column(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  AspectRatio(
-                    aspectRatio: 1,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
+                  SizedBox(
+                     width: 56,
+                    height: 56,
+                    child: ClipOval(
                       child: hasImage
                           ? Image.network(
                               cat.image,
-                              fit: BoxFit.cover,
+                              fit: BoxFit.contain,
                               errorBuilder: (_, __, ___) => Container(
                                 color: Colors.grey.shade300,
                                 child: const Icon(Icons.image_not_supported),

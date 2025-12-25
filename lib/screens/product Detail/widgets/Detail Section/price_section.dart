@@ -68,35 +68,49 @@ class PriceSection extends ConsumerWidget {
                   ),
                 ),
 
-                // Right: quantity selector
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(6),
-                    border: Border.all(color: Colors.grey.shade300),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 4),
-                        child: Text("Qty"),
-                      ),
-                      const SizedBox(width: 14),
-                      DropdownButton<int>(
-                        value: quantity,
-                        dropdownColor: Colors.white,
-                        underline: const SizedBox(),
-                        items: List.generate(10, (i) => i + 1)
-                            .map((q) => DropdownMenuItem<int>(value: q, child: Text(q.toString())))
-                            .toList(),
-                        onChanged: (val) {
-                          if (val != null) ref.read(quantityProvider.notifier).state = val;
-                        },
-                      ),
-                    ],
-                  ),
-                ),
+               Container(
+  padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+  decoration: BoxDecoration(
+    borderRadius: BorderRadius.circular(6),
+    border: Border.all(color: Colors.grey.shade300),
+  ),
+  child: Row(
+    mainAxisSize: MainAxisSize.min,
+    children: [
+      const Padding(
+        padding: EdgeInsets.only(left: 4),
+        child: Text("Qty"),
+      ),
+      const SizedBox(width: 14),
+
+      DropdownButton<int>(
+        value: quantity,
+        dropdownColor: Colors.white,
+        underline: const SizedBox(),
+
+        items: List.generate(
+          ((product.maxQty - product.minQty) ~/ product.stepQty) + 1,
+          (index) {
+            final value =
+                product.minQty + (index * product.stepQty);
+
+            return DropdownMenuItem<int>(
+              value: value,
+              child: Text(value.toString()),
+            );
+          },
+        ),
+
+        onChanged: (val) {
+          if (val == null) return;
+
+          ref.read(quantityProvider.notifier).state = val;
+        },
+      ),
+    ],
+  ),
+)
+
               ],
             ),
           ),

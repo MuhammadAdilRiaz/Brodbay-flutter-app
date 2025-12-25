@@ -11,7 +11,9 @@ class Product {
   final double? regular_price; 
   final double average_rating;
   final String sold; 
-  final int stock;
+  final int minQty;
+  final int maxQty;
+  final int stepQty;
   final String description;
   final String currencySymbol; 
 
@@ -27,7 +29,9 @@ class Product {
     this.regular_price,
     required this.average_rating,
     required this.sold,
-     required this.stock,
+    required this.minQty,
+    required this.maxQty,
+    required this.stepQty,
     required this.description,
     this.currencySymbol = '£',
   });
@@ -174,21 +178,18 @@ class Product {
       soldText = '';
     }
 
-    int stockQty = 0;
+   int minQty = 1;
+  int maxQty = 1;
+  int stepQty = 1;
 
-try {
-  if (json.containsKey('stock_quantity') && json['stock_quantity'] != null) {
-    stockQty = parseInt(json['stock_quantity']);
-  } else if (json.containsKey('quantity') && json['quantity'] != null) {
-    stockQty = parseInt(json['quantity']);
-  } else if (json.containsKey('inventory') && json['inventory'] != null) {
-    stockQty = parseInt(json['inventory']);
-  } else {
-    stockQty = 0;
-  }
-} catch (_) {
-  stockQty = 0;
+if (json['add_to_cart'] is Map) {
+  final atc = json['add_to_cart'];
+
+  minQty = int.tryParse(atc['minimum']?.toString() ?? '1') ?? 1;
+  maxQty = int.tryParse(atc['maximum']?.toString() ?? '1') ?? 1;
+  stepQty = int.tryParse(atc['multiple_of']?.toString() ?? '1') ?? 1;
 }
+
 
    
 
@@ -206,7 +207,9 @@ try {
       regular_price: finalRegularPrice,
       average_rating: ratingVal,
       sold: soldText,
-       stock: stockQty,
+      minQty: minQty,
+    maxQty: maxQty,
+    stepQty: stepQty,
       description: descVal,
       currencySymbol: currencySym,
     );
@@ -223,7 +226,9 @@ try {
       'regular_price': regular_price,
       'rating': average_rating,
       'sold': sold,
-      'stock': stock,
+      'minQty': minQty,
+      'maxQty': maxQty,
+     'stepQty': stepQty,
       'description': description,
       'currency': currencySymbol,
     };

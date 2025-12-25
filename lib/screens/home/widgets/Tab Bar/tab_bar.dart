@@ -1,5 +1,6 @@
 // lib/widgets/Tab Bar/tab_bar.dart
 import 'package:brodbay/providers/category_provider.dart';
+import 'package:brodbay/providers/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -12,11 +13,14 @@ class MainCategoryTabRow extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(categoryNotifierProvider);
     final notifier = ref.read(categoryNotifierProvider.notifier);
+    final theme = ref.watch(themeProvider);
+    final bool hasCampaignGradient = theme.homeGradient.isNotEmpty;
     final categories = state.mainCategories;
     final bool useDarkText =
-    isSticky || state.selectedIndex != 0;
-
-
+    isSticky ||
+    state.selectedIndex != 0 ||
+    !hasCampaignGradient;
+    
     final tabs = ['All', ...categories.map((c) => c.name)];
 
     return SizedBox(

@@ -16,21 +16,34 @@ class ProductHead extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final productsAsync = ref.watch(productsListProvider);
+    final visible = ref.watch(visibleProductsProvider);
+
+final bool hasSaleProducts = visible.any(
+  (p) => p.sale_price != null && p.sale_price! < p.price,
+);
+
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-         Padding(
-          padding: const EdgeInsets.only(left: 12, right: 12),
-          child: Row(
-            children: [
-              const Text('Products', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-              const Spacer(),
-              TextButton(onPressed: (){}, child: const Text("Seeall",
-               style: TextStyle(fontSize: 14, fontWeight: FontWeight.w300, color: Colors.grey)))
-            ],
-          ),
-        ),
+        Padding(
+  padding:  EdgeInsets.all(12),
+  child: Align(
+    alignment: Alignment.centerLeft,
+    child: Text(
+      isVertical
+          ? 'All Products'
+          : hasSaleProducts
+              ? 'Super Deal'
+              : 'Recommended',
+      style: const TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+  ),
+),
+
         productsAsync.when(
           data: (list) {
             if (list.isEmpty) {

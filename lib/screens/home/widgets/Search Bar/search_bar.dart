@@ -1,5 +1,6 @@
 // lib/widgets/Search Bar/search_bar.dart
 import 'package:brodbay/providers/category_provider.dart';
+import 'package:brodbay/providers/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../providers/home_notifier.dart';
@@ -52,7 +53,14 @@ class _SearchBarWidgetState extends ConsumerState<SearchBarWidget> {
     final state = ref.watch(homeNotifierProvider);
     final categoryIndex = ref.watch(categoryNotifierProvider.select((s) => s.selectedIndex));
     final double topPadding = state.isSticky ? 12.0 : 0.0;
-    final bool showBorder = state.isSticky || categoryIndex != 0;
+    final theme = ref.watch(themeProvider);
+    final bool hasCampaignGradient = theme.homeGradient.isNotEmpty;
+    final bool showBorder =
+    state.isSticky ||
+    categoryIndex != 0 ||
+    !hasCampaignGradient;
+
+
 
     return Padding(
       padding: EdgeInsets.only(top: topPadding),

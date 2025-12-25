@@ -1,3 +1,4 @@
+import 'package:brodbay/screens/product%20Detail/product_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -35,17 +36,23 @@ class CategoryTabsScreen extends ConsumerWidget {
         }
 
         return Padding(
-          padding: const EdgeInsets.only(top: 8),
+          padding: const EdgeInsets.only(top: 4),
           child: MasonryGridView.count(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 12),
             crossAxisCount: crossAxisCount,
             mainAxisSpacing: 12,
             crossAxisSpacing: 12,
             itemCount: productList.length,
             itemBuilder: (context, index) {
-              final product = productList[index];
-              return ProductCard(product: product,
-               layout: ProductCardLayout.category,);
+              final p = productList[index];
+              return  ProductCard(
+        product: p,
+        layout: ProductCardLayout.category,
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => ProductDetailScreen(product: p)),
+        ),
+      );
             },
           ),
         );

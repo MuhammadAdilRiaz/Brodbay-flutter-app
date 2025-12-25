@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 enum ProductCardLayout {
-  home,      // cart below image
-  category,  // cart on image
+  home,      
+  category,  
 }
 
 
@@ -48,7 +48,7 @@ class ProductCard extends StatelessWidget {
   borderRadius: BorderRadius.circular(8),
   child: LayoutBuilder(
     builder: (context, constraints) {
-      final imageHeight = constraints.maxWidth / 1.8;
+      final imageHeight = constraints.maxWidth / 1.6;
 
       return SizedBox(
         height: imageHeight,
@@ -59,7 +59,7 @@ class ProductCard extends StatelessWidget {
             primary.isNotEmpty
                 ? Image.network(
                     primary,
-                    fit: BoxFit.cover,
+                    fit: BoxFit.contain,
                     errorBuilder: (_, __, ___) => _imageFallback(),
                   )
                 : _imageFallback(),

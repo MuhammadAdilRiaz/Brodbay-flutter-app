@@ -41,13 +41,16 @@ class ProductDetailScreen extends ConsumerWidget {
           // Text details / bullet points
           SliverToBoxAdapter(child: ProductTextDetail(description: product.description )),
 
-          // Buttons (Add to cart etc.)
-          SliverToBoxAdapter(child: ProductDetailButton(product: product)),
-
           // small spacing at bottom so button not covered by nav gestures
           const SliverToBoxAdapter(child: SizedBox(height: 20)),
         ],
       ),
+       bottomNavigationBar: SafeArea(
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      child: ProductDetailButton(product: product),
+    ),
+  ),
     );
   }
 }

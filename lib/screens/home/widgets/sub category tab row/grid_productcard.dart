@@ -1,7 +1,9 @@
 import 'package:brodbay/providers/category_provider.dart';
+import 'package:brodbay/screens/product%20Detail/product_detail.dart';
 import 'package:brodbay/widgets/Product%20cards/Row%20product/product_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 
 class CategoryProductGrid extends ConsumerWidget {
@@ -17,21 +19,27 @@ class CategoryProductGrid extends ConsumerWidget {
         child: Center(child: Text('No products found')),
       );
     }
+    
 
-    return GridView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      padding: const EdgeInsets.all(12),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        mainAxisSpacing: 12,
-        crossAxisSpacing: 12,
-        childAspectRatio: 0.65,
-      ),
-      itemCount: products.length,
-      itemBuilder: (context, index) {
-        return ProductCard(product: products[index]);
-      },
-    );
+    return MasonryGridView.count(
+    crossAxisCount: 2,                    // two columns
+    mainAxisSpacing: 8,
+    crossAxisSpacing: 8,
+    shrinkWrap: true,
+    physics: const NeverScrollableScrollPhysics(),
+    padding: EdgeInsets.zero,
+   itemCount: products.length,
+    itemBuilder: (context, index) {
+      final p = products[index];
+      return ProductCard(
+        product: p,
+        layout: ProductCardLayout.home,
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => ProductDetailScreen(product: p)),
+        ),
+      );
+    },
+  );
   }
 }

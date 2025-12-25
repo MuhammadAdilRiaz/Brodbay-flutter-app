@@ -2,6 +2,7 @@
 import 'dart:math';
 import 'dart:ui';
 import 'package:brodbay/providers/category_provider.dart';
+import 'package:brodbay/providers/theme_provider.dart';
 import 'package:brodbay/screens/home/widgets/sub%20category%20tab%20row/grid_productcard.dart';
 import 'package:brodbay/screens/home/widgets/sub%20category%20tab%20row/sub_tabrow.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +27,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
 
   static const double _searchBarHeight = 90.0;
-  static const double _tabBarHeight = 55.0;
+  static const double _tabBarHeight = 35.0;
   static const double _appBarContentHeight = 56.0; 
  
   double _overlayFraction = 0.5; 
@@ -79,11 +80,9 @@ static const double _fixedOverlayPixels = 110.0; // change this value if using f
     final isSticky = ref.watch(homeNotifierProvider.select((s) => s.isSticky));
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     final selectedIndex = ref.watch(categoryNotifierProvider.select((s) => s.selectedIndex));
-   
+   final theme = ref.watch(themeProvider);
+    final hasCampaignGradient = theme.homeGradient.isNotEmpty;
 
-
-
-   
     final double headerHeight =
         statusBarHeight + _appBarContentHeight + _searchBarHeight + _tabBarHeight;
 
@@ -104,28 +103,20 @@ static const double _fixedOverlayPixels = 110.0; // change this value if using f
         backgroundColor: Colors.white,
         body: Stack(
           children: [
-         
-           AnimatedContainer(
-             duration: const Duration(milliseconds: 300),
-               height: isSticky ? 0 : 380,
-                 decoration: selectedIndex == 0
-                 ? const BoxDecoration(
-                   gradient: LinearGradient(
-                   begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                          Color(0xFFFF6304),
-                          Color(0xFFFF7D26),
-                          Color(0xFFFF944D),
-                          Color(0xFFFFB380),
-                          Color(0xFFFFFFFF),
-                          ],
-                         ),
-                         )
-                          : const BoxDecoration(
-                        color: Colors.white,
-                        ),
-                          ),
+              AnimatedContainer(
+              duration: const Duration(milliseconds: 300),
+                      height: (!isSticky && hasCampaignGradient) ? 380 : 0,
+                  decoration: hasCampaignGradient
+                   ? BoxDecoration(
+                     gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                       end: Alignment.bottomCenter,
+                       colors: theme.homeGradient,
+                      ),
+                   )
+                    : const BoxDecoration(color: Colors.white),
+                  ),
+
 
 
             CustomScrollView(
@@ -169,7 +160,7 @@ static const double _fixedOverlayPixels = 110.0; // change this value if using f
                         child: Container(
                           height: overlayHeight,
                           decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.80),
+                           color: theme.overlayColor,
                             border: Border(
                               bottom: BorderSide(
                                 color: Colors.black.withOpacity(0.06),

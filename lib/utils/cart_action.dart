@@ -12,7 +12,7 @@ void handleAddToCart({
 }) {
   final cartNotifier = ref.read(cartProvider.notifier);
 
-
+  // prevent duplicate entry
   if (!cartNotifier.isInCart(product.id)) {
     cartNotifier.addItem(
       CartItem(
@@ -21,12 +21,17 @@ void handleAddToCart({
         image: product.imageUrl,
         price: product.price,
         regular_price: product.regular_price,
-        quantity: 1,
-        stock: product.stock,
+        quantity: product.minQty,
+        minQty: product.minQty,
+        maxQty: product.maxQty,
+        stepQty: product.stepQty,
         sellerId: 'default',
       ),
     );
   }
 
- Navigator.of(context).pushNamed('/cart');
+  // optional feedback
+  ScaffoldMessenger.of(context).showSnackBar(
+    const SnackBar(content: Text("Added to cart")),
+  );
 }

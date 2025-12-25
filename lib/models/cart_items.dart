@@ -6,7 +6,9 @@ class CartItem {
   final double? sale_price; 
   final double? regular_price; 
   final int quantity;
-  final int stock;
+  final int minQty;
+final int maxQty;
+final int stepQty;
   final bool isSelected;
   final String sellerId;
   final String currencySymbol; 
@@ -18,7 +20,9 @@ class CartItem {
     required this.price,
     this.sale_price,
     this.regular_price,
-    required this.stock,
+    required this.minQty,
+    required this.maxQty,
+    required this.stepQty,
     this.quantity = 1,
     this.isSelected = true,
     required this.sellerId,
@@ -36,7 +40,9 @@ class CartItem {
       price: price,
       regular_price: regular_price,
       sale_price: sale_price,
-       stock: stock,
+       minQty: minQty,
+       maxQty: maxQty,
+       stepQty: stepQty,
       quantity: quantity ?? this.quantity,
       isSelected: isSelected ?? this.isSelected,
       sellerId: sellerId,

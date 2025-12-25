@@ -27,13 +27,14 @@ class CartScreen extends ConsumerWidget {
           /// Sliver AppBar
           SliverAppBar(
             pinned: true,
-            toolbarHeight: 80,
-           automaticallyImplyLeading: false, 
-            backgroundColor: Colors.white,
+             backgroundColor: Colors.white,
+             surfaceTintColor: Colors.white,
+           automaticallyImplyLeading: false,
             elevation: 0,
+             scrolledUnderElevation: 0,
             flexibleSpace: SafeArea(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                padding: const EdgeInsets.symmetric(horizontal: 12),
                 child: Row(
                   children: const [
                     Expanded(child: CartAppbar()),
@@ -42,6 +43,17 @@ class CartScreen extends ConsumerWidget {
                  ),
                   ),
                 ),
+                  SliverToBoxAdapter(
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                width: double.infinity,
+                color: const Color(0xFFFF7D26),
+                child: const Text(
+                  "11.11 SALE • Ends Nov 20",
+                  style: TextStyle(color: Colors.white, fontSize: 15),
+                ),
+              ),
+            ),
                SliverToBoxAdapter(
                   child: isCartEmpty
                  ? const EmptyCartView()
