@@ -7,7 +7,14 @@ class SaleBanner extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.listen<BannerState>(bannerNotifierProvider, (_, __) {});
+
+    final notifier = ref.read(bannerNotifierProvider.notifier);
     final state = ref.watch(bannerNotifierProvider);
+
+    if (!state.loading && state.banners.isEmpty) {
+      notifier.fetchBanners();
+    }
 
     if (state.loading) {
       return const SizedBox(
@@ -16,18 +23,12 @@ class SaleBanner extends ConsumerWidget {
       );
     }
 
-    final now = DateTime.now().toUtc();
-    final banners = state.banners.where((b) {
-      if (!b.isActive) return false;
-      if (b.startAt != null && now.isBefore(b.startAt!.toUtc())) return false;
-      if (b.endAt != null && now.isAfter(b.endAt!.toUtc())) return false;
-      return true;
-    }).toList();
+    final banners =
+        state.banners.where((b) => b.isTimeValid).toList(growable: false);
 
     if (banners.isEmpty) {
       return const SizedBox.shrink();
     }
-
 
     return SizedBox(
       height: 180,
@@ -37,21 +38,10 @@ class SaleBanner extends ConsumerWidget {
         itemBuilder: (_, index) {
           final banner = banners[index];
 
-          return GestureDetector(
-            onTap: () {
-              if (banner.clickUrl != null) {
-                // navigate or deep link
-              }
-            },
-            child: Image.network(
-              banner.imageUrl,
-              width: double.infinity,
-              fit: BoxFit.cover,
-              loadingBuilder: (c, w, p) {
-                if (p == null) return w;
-                return const Center(child: CircularProgressIndicator());
-              },
-            ),
+          return Image.network(
+            banner.imageUrl,
+            width: double.infinity,
+            fit: BoxFit.cover,
           );
         },
       ),

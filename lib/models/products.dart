@@ -15,6 +15,9 @@ class Product {
   final int maxQty;
   final int stepQty;
   final String description;
+  final List<ProductAttribute> attributes;
+ final List<ProductVariation> variations;
+
   final String currencySymbol; 
 
   
@@ -33,6 +36,8 @@ class Product {
     required this.maxQty,
     required this.stepQty,
     required this.description,
+    required this.attributes,
+  required this.variations,
     this.currencySymbol = '£',
   });
 
@@ -76,6 +81,14 @@ class Product {
       if (v is num) return v.toInt();
       return int.tryParse(v.toString()) ?? 0;
     }
+    final attributes = (json['attributes'] as List? ?? [])
+    .map((e) => ProductAttribute.fromJson(e))
+    .toList();
+
+final variations = (json['variations'] as List? ?? [])
+    .map((e) => ProductVariation.fromJson(e))
+    .toList();
+
 
     // --- Prices are nested under `prices` in the API sample ---
     double finalPrice = 0.0;
@@ -212,6 +225,8 @@ if (json['add_to_cart'] is Map) {
     stepQty: stepQty,
       description: descVal,
       currencySymbol: currencySym,
+       attributes: attributes,
+  variations: variations,
     );
   }
 
@@ -232,5 +247,71 @@ if (json['add_to_cart'] is Map) {
       'description': description,
       'currency': currencySymbol,
     };
+  }
+}
+class ProductAttribute {
+  final String name;
+  final List<ProductAttributeTerm> terms;
+
+  ProductAttribute({
+    required this.name,
+    required this.terms,
+  });
+
+  factory ProductAttribute.fromJson(Map<String, dynamic> json) {
+    return ProductAttribute(
+      name: json['name'] ?? '',
+      terms: (json['terms'] as List? ?? [])
+          .map((e) => ProductAttributeTerm.fromJson(e))
+          .toList(),
+    );
+  }
+}
+
+class ProductAttributeTerm {
+  final String name;
+
+  ProductAttributeTerm({required this.name});
+
+  factory ProductAttributeTerm.fromJson(Map<String, dynamic> json) {
+    return ProductAttributeTerm(
+      name: json['name'] ?? '',
+    );
+  }
+}
+
+class ProductVariation {
+  final String id;
+  final List<VariationAttribute> attributes;
+
+  ProductVariation({
+    required this.id,
+    required this.attributes,
+  });
+
+  factory ProductVariation.fromJson(Map<String, dynamic> json) {
+    return ProductVariation(
+      id: json['id'].toString(),
+      attributes: (json['attributes'] as List? ?? [])
+          .map((e) => VariationAttribute.fromJson(e))
+          .toList(),
+    );
+  }
+}
+
+class VariationAttribute {
+  final String name;
+  final String value;
+
+  VariationAttribute({
+    required this.name,
+    required this.value,
+  });
+
+  factory VariationAttribute.fromJson(Map<String, dynamic> json) {
+    return VariationAttribute(
+      name: json['name'] ?? '',
+      value: json['value'] ?? '',
+    );
   }
 }

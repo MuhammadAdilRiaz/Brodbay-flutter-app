@@ -30,7 +30,7 @@ class CartAppbar extends StatelessWidget {
           const Text(
             "Cart",
             style: TextStyle(
-              fontSize: 16,
+              fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
           ),

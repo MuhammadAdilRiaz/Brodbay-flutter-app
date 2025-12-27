@@ -7,20 +7,30 @@ class SplashScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.listen(appInitProvider, (previous, next) {
-      next.whenData((_) {
-        Navigator.pushReplacementNamed(context, '/home');
-      });
+    final init = ref.watch(appInitProvider);
+
+    ref.listen(appInitProvider, (_, next) {
+      next.whenOrNull(
+        data: (_) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            Navigator.pushReplacementNamed(context, '/home');
+          });
+        },
+      );
     });
 
     return const Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
       body: Center(
-        child: Image(
-          image: AssetImage("assets/logos/website-brodbay-logo.png"),
-          width: 220,
+        child: SizedBox(
+          width: 180, 
+          child: Image(
+            image: AssetImage("assets/gif/logos.gif"),
+            fit: BoxFit.contain,
+          ),
         ),
       ),
     );
   }
 }
+

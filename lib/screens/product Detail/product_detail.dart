@@ -1,14 +1,14 @@
-// lib/screens/product_detail_screen.dart
 import 'package:brodbay/models/products.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'widgets/Buttons/Product_detail_button.dart';
-import 'widgets/Image Detail/image_detail.dart';
 import 'widgets/Image Detail/product_images.dart';
+import 'widgets/Product Options/color_selector.dart';
+import 'widgets/Product Options/size_selector.dart';
 import 'widgets/SearchBar/Product_Detail_SearchBar.dart';
 import 'widgets/Detail Section/product_text_detail.dart';
 import 'widgets/Detail Section/rating_section.dart';
+import 'widgets/Buttons/Product_detail_button.dart';
 
 class ProductDetailScreen extends ConsumerWidget {
   final Product product;
@@ -19,38 +19,58 @@ class ProductDetailScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            pinned: true,
-            automaticallyImplyLeading: false,
-            backgroundColor: const Color(0xFFFF6304),
-            elevation: 0,
-            title: ProductDetailSearchbar(),
+      body: Stack(
+        children: [
+          /// MAIN SCROLL VIEW
+          CustomScrollView(
+            slivers: [
+              /// IMAGE SLIDER
+              SliverToBoxAdapter(
+                child: ProductImages(product: product),
+              ),
+
+              /// PRODUCT DETAILS
+              SliverToBoxAdapter(
+  child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        TitleRatingSection(product: product),
+
+        const SizedBox(height: 10),
+        ColorSelector(product: product),
+
+        const SizedBox(height: 16),
+        SizeSelector(product: product),
+
+        const SizedBox(height: 16),
+        ProductTextDetail(description: product.description),
+
+        const SizedBox(height: 20),
+      ],
+    
+  ),
+),
+
+            ],
           ),
 
-          // Main large image
-          SliverToBoxAdapter(child: ProductImages(product: product)),
-
-          // Thumbnails (different colors)
-          SliverToBoxAdapter(child: ImageDetail(product: product)),
-
-          // Title, rating, sold and price section
-          SliverToBoxAdapter(child: TitleRatingSection(product: product)),
-
-          // Text details / bullet points
-          SliverToBoxAdapter(child: ProductTextDetail(description: product.description )),
-
-          // small spacing at bottom so button not covered by nav gestures
-          const SliverToBoxAdapter(child: SizedBox(height: 20)),
+          /// FLOATING APP BAR
+          Positioned(
+            top: MediaQuery.of(context).padding.top,
+            left: 0,
+            right: 0,
+            child: const ProductDetailSearchbar(),
+          ),
         ],
       ),
-       bottomNavigationBar: SafeArea(
-    child: Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-      child: ProductDetailButton(product: product),
-    ),
-  ),
+
+      /// BOTTOM BUTTON
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+          child: ProductDetailButton(product: product),
+        ),
+      ),
     );
   }
 }

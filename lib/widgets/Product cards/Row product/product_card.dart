@@ -8,9 +8,6 @@ enum ProductCardLayout {
   home,      
   category,  
 }
-
-
-
 class ProductCard extends StatelessWidget {
   final Product product;
   final VoidCallback? onTap;

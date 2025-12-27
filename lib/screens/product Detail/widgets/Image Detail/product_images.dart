@@ -1,58 +1,61 @@
-// lib/widgets/product_images.dart
 import 'package:brodbay/models/products.dart';
+import 'package:brodbay/providers/product_detail_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../providers/product_detail_providers.dart';
-
-
 class ProductImages extends ConsumerWidget {
   final Product product;
 
   const ProductImages({super.key, required this.product});
 
-  bool _looksLikeUrl(String? s) {
-    if (s == null) return false;
-    final uri = Uri.tryParse(s);
-    return uri != null && (uri.hasScheme && (uri.scheme == 'http' || uri.scheme == 'https'));
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedIndex = ref.watch(selectedImageIndexProvider);
-    final images = <String>[];
-    // Prefer list of images if present; otherwise fallback to single image field
-    try {
-      if ((product.images != null) && (product.images is List) && (product.images as List).isNotEmpty) {
-        images.addAll(product.images.cast<String>());
-      }
-    } catch (_) {
-      // ignore if product.images does not exist
-    }
-    if (images.isEmpty) {
-      if (product.imageUrl != null && product.imageUrl.toString().isNotEmpty) {
-        images.add(product.imageUrl.toString());
-      }
-    }
+    final images = product.images;
+    final currentIndex = ref.watch(selectedImageIndexProvider);
 
-    final mainImage = (images.isNotEmpty && selectedIndex < images.length) ? images[selectedIndex] : (images.isNotEmpty ? images[0] : '');
+    return Stack(
+      children: [
+        SizedBox(
+          height: 420,
+          child: PageView.builder(
+            itemCount: images.length,
+            onPageChanged: (index) {
+              ref.read(selectedImageIndexProvider.notifier).state = index;
+            },
+            itemBuilder: (context, index) {
+              return Image.network(
+                images[index],
+                fit: BoxFit.cover,
+                width: double.infinity,
+              );
+            },
+          ),
+        ),
 
-    // display network if looks like URL, otherwise asset
-    final Widget imageWidget = _looksLikeUrl(mainImage)
-        ? Image.network(
-            mainImage,
-            height: 350,
-            fit: BoxFit.contain,
-            errorBuilder: (c, e, s) => product.imageUrl != null && product.imageUrl.isNotEmpty
-                ? Image.asset(product.imageUrl, height: 350, fit: BoxFit.contain)
-                : const SizedBox(height: 350),
-          )
-        : (product.imageUrl != null && product.imageUrl.isNotEmpty
-            ? Image.asset(mainImage, height: 350, fit: BoxFit.contain)
-            : const SizedBox(height: 350));
-
-    return Container(
-      decoration: const BoxDecoration(color: Colors.white),
-      child: Center(child: imageWidget),
+        /// DOT INDICATOR
+        Positioned(
+          bottom: 12,
+          left: 0,
+          right: 0,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: List.generate(
+              images.length,
+              (i) => AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                margin: const EdgeInsets.symmetric(horizontal: 4),
+                width: i == currentIndex ? 10 : 6,
+                height: i == currentIndex ? 10 : 6,
+                decoration: BoxDecoration(
+                  color: i == currentIndex
+                      ? Colors.white
+                      : Colors.white54,
+                  shape: BoxShape.circle,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

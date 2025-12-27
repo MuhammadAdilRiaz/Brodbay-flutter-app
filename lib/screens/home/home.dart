@@ -2,6 +2,7 @@
 import 'dart:math';
 import 'dart:ui';
 import 'package:brodbay/providers/category_provider.dart';
+import 'package:brodbay/providers/connectivity_providers.dart';
 import 'package:brodbay/providers/theme_provider.dart';
 import 'package:brodbay/screens/home/widgets/sub%20category%20tab%20row/grid_productcard.dart';
 import 'package:brodbay/screens/home/widgets/sub%20category%20tab%20row/sub_tabrow.dart';
@@ -24,6 +25,31 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   final ScrollController _scrollController = ScrollController();
+  Widget buildOfflineGrid() {
+  return SliverPadding(
+    padding: const EdgeInsets.all(16),
+    sliver: SliverGrid(
+      delegate: SliverChildBuilderDelegate(
+        (context, index) {
+          return Container(
+            decoration: BoxDecoration(
+              color: Colors.grey[300],
+              borderRadius: BorderRadius.circular(12),
+            ),
+          );
+        },
+        childCount: 6, // number of placeholder cards
+      ),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 16,
+        mainAxisSpacing: 16,
+        childAspectRatio: 3 / 4,
+      ),
+    ),
+  );
+}
+
 
 
   static const double _searchBarHeight = 90.0;
@@ -77,23 +103,25 @@ static const double _fixedOverlayPixels = 110.0; // change this value if using f
 
   @override
   Widget build(BuildContext context) {
+   
     final isSticky = ref.watch(homeNotifierProvider.select((s) => s.isSticky));
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     final selectedIndex = ref.watch(categoryNotifierProvider.select((s) => s.selectedIndex));
-   final theme = ref.watch(themeProvider);
+    final theme = ref.watch(themeProvider);
     final hasCampaignGradient = theme.homeGradient.isNotEmpty;
-
     final double headerHeight =
         statusBarHeight + _appBarContentHeight + _searchBarHeight + _tabBarHeight;
 
-   final double overlayHeight = _computeOverlayHeight(statusBarHeight) ;
-
-
-   
+    final double overlayHeight = _computeOverlayHeight(statusBarHeight) ;
     final double offset = _lastOffset.clamp(0.0, double.infinity);
     final double translateY = -min(offset, _collapseAmount);
+    final homeState = ref.watch(homeNotifierProvider);
+    final isOnline = ref.watch(connectivityProvider);
+    final productsToShow = isOnline ? homeState.products : homeState.cachedProducts;
 
-   
+// Use productsToShow in ProductHead, CategoryProductGrid, etc.
+
+
     final SystemUiOverlayStyle overlayStyle =
         isSticky ? SystemUiOverlayStyle.dark : SystemUiOverlayStyle.light;
 
@@ -127,16 +155,16 @@ static const double _fixedOverlayPixels = 110.0; // change this value if using f
                   child: SizedBox(height: headerHeight),
                 ),
 
-                 if (selectedIndex == 0) ...[
-                  const SliverToBoxAdapter(child: SaleBanner()),
-                  const SliverToBoxAdapter(
-                      child: ProductHead(isVertical: false)),
-                  const SliverToBoxAdapter(
-                      child: ProductHead(isVertical: true)),
-                ] else ...[
-                  const SliverToBoxAdapter(child: SubCategoryTabRow()),
-                  const SliverToBoxAdapter(child: CategoryProductGrid()),
-                ],
+                if (!isOnline) 
+      buildOfflineGrid()   // placeholder gray cards
+    else if (selectedIndex == 0) ...[
+      const SliverToBoxAdapter(child: SaleBanner()),
+     SliverToBoxAdapter(child: ProductHead(products: productsToShow,isVertical: false)),
+      SliverToBoxAdapter(child: ProductHead(products: productsToShow,isVertical: true)),
+    ] else ...[
+      const SliverToBoxAdapter(child: SubCategoryTabRow()),
+      const SliverToBoxAdapter(child: CategoryProductGrid()),
+    ],
               ],
             ),
 

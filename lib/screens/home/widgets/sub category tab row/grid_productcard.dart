@@ -19,8 +19,7 @@ class CategoryProductGrid extends ConsumerWidget {
         child: Center(child: Text('No products found')),
       );
     }
-    
-
+  
     return MasonryGridView.count(
     crossAxisCount: 2,                    // two columns
     mainAxisSpacing: 8,

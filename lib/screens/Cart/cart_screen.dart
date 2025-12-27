@@ -1,4 +1,5 @@
 import 'package:brodbay/providers/cart_providers.dart';
+import 'package:brodbay/providers/connectivity_providers.dart';
 import 'package:brodbay/providers/product_providers.dart';
 import 'package:brodbay/screens/Cart/widget/Cart%20Tile/cart_item_tile.dart';
 import 'package:brodbay/screens/Cart/widget/Footer/cart_footer.dart';
@@ -18,107 +19,130 @@ class CartScreen extends ConsumerWidget {
     final cartItems = ref.watch(cartProvider);
     final isCartEmpty = cartItems.isEmpty;
     final products = ref.watch(filteredProductsProvider);
+    final isOnline = ref.watch(connectivityProvider);
+
 
     return Scaffold(
       backgroundColor: Colors.white,
-      body: CustomScrollView(
-        slivers: [
-
-          /// Sliver AppBar
-          SliverAppBar(
-            pinned: true,
-             backgroundColor: Colors.white,
-             surfaceTintColor: Colors.white,
-           automaticallyImplyLeading: false,
-            elevation: 0,
-             scrolledUnderElevation: 0,
-            flexibleSpace: SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: Row(
-                  children: const [
-                    Expanded(child: CartAppbar()),
-                  ],
-                 ),
-                 ),
-                  ),
-                ),
-                  SliverToBoxAdapter(
-              child: Container(
-                padding: const EdgeInsets.all(10),
-                width: double.infinity,
-                color: const Color(0xFFFF7D26),
-                child: const Text(
-                  "11.11 SALE • Ends Nov 20",
-                  style: TextStyle(color: Colors.white, fontSize: 15),
-                ),
-              ),
-            ),
-               SliverToBoxAdapter(
-                  child: isCartEmpty
-                 ? const EmptyCartView()
-                 : const SizedBox.shrink(),
-                 ),
-
-                  if (!isCartEmpty)
-                   SliverList(
-                     delegate: SliverChildBuilderDelegate(
-                     (context, index) {
-                       return CartItemTile(
-                  item: cartItems[index],
-                  );
-                 },
-                   childCount: cartItems.length,
-                    ),
-                       ),
-                       if (!isCartEmpty)
-                       const SliverToBoxAdapter(
-                       child: CartFooter(),
-                       ),
-
-
-                        SliverToBoxAdapter(
-                        child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                        child: Text(
-                       "You May Also Like",
-                        style: TextStyle(
-                       fontSize: 16,
-                       fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                   ),
-                  ),
-
-    SliverPadding(
-  padding: const EdgeInsets.symmetric(horizontal: 12),
-  sliver: SliverMasonryGrid.count(
-    crossAxisCount: 2,
-    mainAxisSpacing: 8,
-    crossAxisSpacing: 8,
-    childCount: products.length,
-    itemBuilder: (context, index) {
-      final p = products[index];
-      return ProductCard(
-        product: p,
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => ProductDetailScreen(product: p),
-            ),
-          );
-        },
-      );
-    },
-  ),
-),
-
-          const SliverToBoxAdapter(
-            child: SizedBox(height: 120),
-          ),
-        ],
-      ),
+      body: isOnline 
+    ? buildOnlineContent(cartItems, isCartEmpty, products)
+    : buildOfflineScreen(ref),
     );
   }
+     Widget buildOnlineContent(
+    List cartItems, bool isCartEmpty, List products) {
+  return CustomScrollView(
+    slivers: [
+
+      /// Sliver AppBar
+      SliverAppBar(
+        pinned: true,
+        backgroundColor: Colors.white,
+        surfaceTintColor: Colors.white,
+        automaticallyImplyLeading: false,
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        flexibleSpace: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: Row(
+              children: const [
+                Expanded(child: CartAppbar()),
+              ],
+            ),
+          ),
+        ),
+      ),
+
+      SliverToBoxAdapter(
+        child: Container(
+          padding: const EdgeInsets.all(10),
+          width: double.infinity,
+          color: const Color(0xFFFF7D26),
+          child: const Text(
+            "11.11 SALE • Ends Nov 20",
+            style: TextStyle(color: Colors.white, fontSize: 15),
+          ),
+        ),
+      ),
+
+      SliverToBoxAdapter(
+        child: isCartEmpty ? const EmptyCartView() : const SizedBox.shrink(),
+      ),
+
+      if (!isCartEmpty)
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (context, index) => CartItemTile(item: cartItems[index]),
+            childCount: cartItems.length,
+          ),
+        ),
+
+      if (!isCartEmpty)
+        const SliverToBoxAdapter(child: CartFooter()),
+
+      SliverToBoxAdapter(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          child: const Text(
+            "You May Also Like",
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
+
+      SliverPadding(
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        sliver: SliverMasonryGrid.count(
+          crossAxisCount: 2,
+          mainAxisSpacing: 8,
+          crossAxisSpacing: 8,
+          childCount: products.length,
+          itemBuilder: (context, index) {
+            final p = products[index];
+            return ProductCard(
+              product: p,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => ProductDetailScreen(product: p),
+                  ),
+                );
+              },
+            );
+          },
+        ),
+      ),
+
+      const SliverToBoxAdapter(
+        child: SizedBox(height: 120),
+      ),
+    ],
+  );
+}
+Widget buildOfflineScreen(WidgetRef ref) {
+  return Center(
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Icon(Icons.wifi_off, size: 80, color: Colors.grey),
+        const SizedBox(height: 20),
+        const Text(
+          'Oops! No Internet',
+          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 20),
+        ElevatedButton(
+          onPressed: () {
+            ref.read(connectivityProvider.notifier).checkConnection();
+          },
+          child: const Text('Try Again'),
+        ),
+      ],
+    ),
+  );
+}
+
+
 }

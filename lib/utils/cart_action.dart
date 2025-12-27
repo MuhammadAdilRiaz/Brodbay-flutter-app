@@ -12,7 +12,7 @@ void handleAddToCart({
 }) {
   final cartNotifier = ref.read(cartProvider.notifier);
 
-  // prevent duplicate entry
+  // prevent duplicate entrys
   if (!cartNotifier.isInCart(product.id)) {
     cartNotifier.addItem(
       CartItem(

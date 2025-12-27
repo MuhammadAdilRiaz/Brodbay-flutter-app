@@ -61,7 +61,6 @@ class _SearchBarWidgetState extends ConsumerState<SearchBarWidget> {
     !hasCampaignGradient;
 
 
-
     return Padding(
       padding: EdgeInsets.only(top: topPadding),
       child: Container(

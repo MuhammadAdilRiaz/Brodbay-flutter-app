@@ -1,3 +1,4 @@
+import 'package:brodbay/providers/connectivity_providers.dart';
 import 'package:brodbay/providers/profile_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -33,8 +34,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       });
     }
 
-    // Decide which of the three states to show:
-    // 1) Signed in -> show only ProfileDetails
     final bool isSignedIn = auth.user != null;
     // 2) Signing in -> show only SignInForm
     final bool isSigningIn = !isSignedIn && _showSignInForm;
