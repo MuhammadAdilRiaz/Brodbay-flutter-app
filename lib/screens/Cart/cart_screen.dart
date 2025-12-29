@@ -1,5 +1,4 @@
 import 'package:brodbay/providers/cart_providers.dart';
-import 'package:brodbay/providers/connectivity_providers.dart';
 import 'package:brodbay/providers/product_providers.dart';
 import 'package:brodbay/screens/Cart/widget/Cart%20Tile/cart_item_tile.dart';
 import 'package:brodbay/screens/Cart/widget/Footer/cart_footer.dart';
@@ -19,19 +18,12 @@ class CartScreen extends ConsumerWidget {
     final cartItems = ref.watch(cartProvider);
     final isCartEmpty = cartItems.isEmpty;
     final products = ref.watch(filteredProductsProvider);
-    final isOnline = ref.watch(connectivityProvider);
+   
 
 
     return Scaffold(
       backgroundColor: Colors.white,
-      body: isOnline 
-    ? buildOnlineContent(cartItems, isCartEmpty, products)
-    : buildOfflineScreen(ref),
-    );
-  }
-     Widget buildOnlineContent(
-    List cartItems, bool isCartEmpty, List products) {
-  return CustomScrollView(
+      body:  CustomScrollView(
     slivers: [
 
       /// Sliver AppBar
@@ -119,30 +111,11 @@ class CartScreen extends ConsumerWidget {
         child: SizedBox(height: 120),
       ),
     ],
-  );
+  )
+    );
 }
-Widget buildOfflineScreen(WidgetRef ref) {
-  return Center(
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const Icon(Icons.wifi_off, size: 80, color: Colors.grey),
-        const SizedBox(height: 20),
-        const Text(
-          'Oops! No Internet',
-          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: 20),
-        ElevatedButton(
-          onPressed: () {
-            ref.read(connectivityProvider.notifier).checkConnection();
-          },
-          child: const Text('Try Again'),
-        ),
-      ],
-    ),
-  );
+
 }
 
 
-}
+

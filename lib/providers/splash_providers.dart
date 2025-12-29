@@ -10,11 +10,11 @@ final appInitProvider = FutureProvider<void>((ref) async {
   ref.read(themeProvider.notifier).applyCampaign(campaignName);
 
   // 3️⃣ Small splash delay (UX only)
-  await Future.delayed(const Duration(seconds: 2));
+  await Future.delayed(const Duration(seconds: 5));
 });
 
 // Mock API call (replace later)
 Future<String> _fetchCampaignFromApi() async {
-  await Future.delayed(const Duration(milliseconds: 300));
+  await Future.delayed(const Duration(milliseconds: 700));
   return ''; 
 }

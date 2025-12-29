@@ -1,29 +1,37 @@
 import 'dart:math'; 
 import 'package:brodbay/models/products.dart'; 
 import 'package:brodbay/providers/product_providers.dart';
- import 'package:flutter/material.dart';
-  import 'package:flutter_riverpod/flutter_riverpod.dart';
-   import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-    import '../../../screens/product Detail/product_detail.dart'; 
-    import 'product_card.dart'; 
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import '../../../screens/product Detail/product_detail.dart'; 
+import 'product_card.dart'; 
+
+
     class ProductHead extends ConsumerWidget
-    { final bool isVertical; final List<Product> products; 
-    const ProductHead({super.key,required this.products, this.isVertical = false});
+
+    { 
+      final bool isVertical; 
+
+    const ProductHead({super.key,this.isVertical = false});
+
      @override Widget build(BuildContext context, WidgetRef ref) 
     {
        final productsAsync = ref.watch(productsListProvider); 
       final visible = ref.watch(visibleProductsProvider); 
      final bool hasSaleProducts = visible.any( 
       (p) => p.sale_price != null && p.sale_price! < p.price, );
-     if (products.isEmpty) { return SizedBox();
-      
-        } return
+    
+        return
          Column( crossAxisAlignment: CrossAxisAlignment.start,
-          children: [ Padding( padding: EdgeInsets.all(12),
+          children: [ 
+            Padding( padding: EdgeInsets.all(12),
            child: Align( alignment: Alignment.centerLeft, 
            child: Text( isVertical ? 'All Products' : hasSaleProducts ? 
            'Super Deal' : 'Recommended', 
-           style: const TextStyle( fontSize: 16, fontWeight: FontWeight.bold, ), ), ), ),
+           style: const TextStyle( fontSize: 16, fontWeight: FontWeight.bold, 
+           ), ), 
+           ), ),
             productsAsync.when( data: (list) { if (list.isEmpty)
              {
                return const SizedBox( child: Center(child: Text('No products'))); }
@@ -38,8 +46,10 @@ import 'package:brodbay/providers/product_providers.dart';
                return ProductCard( product: p,
                 layout: ProductCardLayout.home, 
                 onTap: () => Navigator.push( context, 
-                MaterialPageRoute(builder: (_) => ProductDetailScreen(product: p)), ), ); }, ); } 
-                // Horizontal row: use Riverpod derived providers for all logic 
+                MaterialPageRoute(builder: (_) => ProductDetailScreen(product: p)), 
+                ), ); 
+                  }, ); } 
+               
                 
                 final visible = ref.watch(visibleProductsProvider);
                  final meta = ref.watch(productsRowMetaProvider); 
@@ -79,42 +89,60 @@ import 'package:brodbay/providers/product_providers.dart';
                             Text('View more', textAlign: TextAlign.center),
                            SizedBox(width: 6), Icon(Icons.arrow_circle_right_outlined),
                             ], 
+                       ), 
+                                ), 
+               ), 
                             ), 
-                            ), 
-                            ), 
-                            ), 
-                            ); 
-                            }
+                             ); 
+                               }
                             if (index == visible.length && allItemsVisible) 
                             { 
                               return Container( width: widthLimit,
                              margin: const EdgeInsets.symmetric(horizontal: 2), 
-                             child: GestureDetector( onTap: () {
+                             child: GestureDetector( 
+                              onTap: () {
                                ref.read(productRowVisibleCountProvider.notifier).state = cfg.limit; }, 
-                             child: Center( child: Padding( padding: const EdgeInsets.all(8.0), 
-                             child: Column( mainAxisSize: MainAxisSize.min, 
+
+                             child: Center( 
+                              
+                              child: Padding( padding: const EdgeInsets.all(8.0), 
+                             child: 
+                             Column( 
+                              mainAxisSize: MainAxisSize.min, 
                              mainAxisAlignment: MainAxisAlignment.center, 
-                             children: const [ Icon(Icons.remove), SizedBox(height: 6),
+                             children: const [ 
+                              
+                              Icon(Icons.remove), SizedBox(height: 6),
                               Text('View less',
+
                                textAlign: TextAlign.center), ],
-                               ), ), ),
-                                ), ); 
+                               ),
+                                   ), 
+                                     ),
+                                ),    
+                                      ); 
                                 }
-                               final Product p = visible[index]; return Container( width: widthLimit,
+                               final Product p = visible[index];
+                               
+                                return Container( width: widthLimit,
                                 margin: const EdgeInsets.symmetric(horizontal: 2),
-                                 child: ProductCard( product: p, layout: ProductCardLayout.category, 
+                                 child: ProductCard(
+                                   product: p, layout: ProductCardLayout.category, 
                                  onTap: () => Navigator.push( context, 
                                  MaterialPageRoute(builder: (_) => ProductDetailScreen(product: p)),
-                                  ), ),
-                                   );
-                                   }, ),
-                                    ); },
+        ), ),
+                   );
+                  }, ),
+                    ); },
                                   loading: () => const SizedBox(height: 120,
                                    child: Center(child: CircularProgressIndicator())),
                                     error: (err, st) => SizedBox(height: 120, 
                                     child: Center(child: Text('Error: ${err.toString()}'))),
-                                     ),
-                                      ],
-                                      );
-                                       } 
-                                       }
+         ),
+        ],
+            );
+                } 
+                                       
+            }
+            
+  

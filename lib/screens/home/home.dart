@@ -2,7 +2,6 @@
 import 'dart:math';
 import 'dart:ui';
 import 'package:brodbay/providers/category_provider.dart';
-import 'package:brodbay/providers/connectivity_providers.dart';
 import 'package:brodbay/providers/theme_provider.dart';
 import 'package:brodbay/screens/home/widgets/sub%20category%20tab%20row/grid_productcard.dart';
 import 'package:brodbay/screens/home/widgets/sub%20category%20tab%20row/sub_tabrow.dart';
@@ -25,33 +24,7 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   final ScrollController _scrollController = ScrollController();
-  Widget buildOfflineGrid() {
-  return SliverPadding(
-    padding: const EdgeInsets.all(16),
-    sliver: SliverGrid(
-      delegate: SliverChildBuilderDelegate(
-        (context, index) {
-          return Container(
-            decoration: BoxDecoration(
-              color: Colors.grey[300],
-              borderRadius: BorderRadius.circular(12),
-            ),
-          );
-        },
-        childCount: 6, // number of placeholder cards
-      ),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        crossAxisSpacing: 16,
-        mainAxisSpacing: 16,
-        childAspectRatio: 3 / 4,
-      ),
-    ),
-  );
-}
-
-
-
+ 
   static const double _searchBarHeight = 90.0;
   static const double _tabBarHeight = 35.0;
   static const double _appBarContentHeight = 56.0; 
@@ -115,11 +88,7 @@ static const double _fixedOverlayPixels = 110.0; // change this value if using f
     final double overlayHeight = _computeOverlayHeight(statusBarHeight) ;
     final double offset = _lastOffset.clamp(0.0, double.infinity);
     final double translateY = -min(offset, _collapseAmount);
-    final homeState = ref.watch(homeNotifierProvider);
-    final isOnline = ref.watch(connectivityProvider);
-    final productsToShow = isOnline ? homeState.products : homeState.cachedProducts;
-
-// Use productsToShow in ProductHead, CategoryProductGrid, etc.
+    
 
 
     final SystemUiOverlayStyle overlayStyle =
@@ -150,21 +119,17 @@ static const double _fixedOverlayPixels = 110.0; // change this value if using f
             CustomScrollView(
               controller: _scrollController,
               slivers: [
-             
                 SliverToBoxAdapter(
                   child: SizedBox(height: headerHeight),
                 ),
-
-                if (!isOnline) 
-      buildOfflineGrid()   // placeholder gray cards
-    else if (selectedIndex == 0) ...[
-      const SliverToBoxAdapter(child: SaleBanner()),
-     SliverToBoxAdapter(child: ProductHead(products: productsToShow,isVertical: false)),
-      SliverToBoxAdapter(child: ProductHead(products: productsToShow,isVertical: true)),
-    ] else ...[
-      const SliverToBoxAdapter(child: SubCategoryTabRow()),
-      const SliverToBoxAdapter(child: CategoryProductGrid()),
-    ],
+                  if (selectedIndex == 0) ...[
+                 const SliverToBoxAdapter(child: SaleBanner()),
+                 SliverToBoxAdapter(child: ProductHead(isVertical: false)),
+                 SliverToBoxAdapter(child: ProductHead(isVertical: true)),
+                 ] else ...[
+                  const SliverToBoxAdapter(child: SubCategoryTabRow()),
+                        const SliverToBoxAdapter(child: CategoryProductGrid()),
+                       ],
               ],
             ),
 

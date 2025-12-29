@@ -1,5 +1,5 @@
 // lib/providers/connectivity_provider.dart
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+/*import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 
 final connectivityProvider = StateNotifierProvider<ConnectivityNotifier, bool>((ref) {
@@ -27,3 +27,4 @@ class ConnectivityNotifier extends StateNotifier<bool> {
     state = result != ConnectivityResult.none;
   }
 }
+*/

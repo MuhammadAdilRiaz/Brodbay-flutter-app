@@ -54,7 +54,7 @@ class HomeNotifier extends StateNotifier<HomeState> {
 
   HomeNotifier(this.ref, [HomeState? initial]) : super(initial ?? const HomeState()) {
     _loadCategoriesFromApi();
-    fetchProducts(); // fetch products on init
+   // fetch products on init
   }
 
   static const double _stickThreshold = 60.0;
@@ -112,32 +112,6 @@ class HomeNotifier extends StateNotifier<HomeState> {
       );
     } catch (e) {
       // keep categories empty on error
-    }
-  }
-
-  /// ----------------------
-  /// Products logic
-  /// ----------------------
-  Future<void> fetchProducts() async {
-    try {
-      final isOnline = ref.read(connectivityProvider);
-      if (!isOnline) {
-        // offline -> keep cached products
-        state = state.copyWith(products: state.cachedProducts);
-        return;
-      }
-
-      final productApi = ref.read(productApiProvider);
-      final List<Product> fetchedProducts = await productApi.fetchProducts();
-
-      // update both online and cached
-      state = state.copyWith(
-        products: fetchedProducts,
-        cachedProducts: fetchedProducts,
-      );
-    } catch (e) {
-      // error -> fallback to cached products
-      state = state.copyWith(products: state.cachedProducts);
     }
   }
 }

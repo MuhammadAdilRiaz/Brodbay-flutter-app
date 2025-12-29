@@ -25,7 +25,7 @@ class SplashScreen extends ConsumerWidget {
         child: SizedBox(
           width: 180, 
           child: Image(
-            image: AssetImage("assets/gif/logos.gif"),
+            image: AssetImage("assets/gif/B-Logo.gif"),
             fit: BoxFit.contain,
           ),
         ),

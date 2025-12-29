@@ -1,5 +1,4 @@
 // lib/screens/category_screen.dart
-import 'package:brodbay/providers/connectivity_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'widget/Left Column/category_left_menu.dart';
@@ -11,21 +10,11 @@ class CategoryScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isOnline = ref.watch(connectivityProvider);
+   // final isOnline = ref.watch(connectivityProvider);
 
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SafeArea(
-        child: isOnline
-            ? buildOnlineContent()
-            : buildOfflineScreen(ref),
-      ),
-    );
-  }
-
-  // Online content – your existing CustomScrollView
-  Widget buildOnlineContent() {
-    return CustomScrollView(
+      body:  CustomScrollView(
       slivers: [
         SliverAppBar(
           pinned: true,
@@ -74,31 +63,8 @@ class CategoryScreen extends ConsumerWidget {
           ),
         ),
       ],
+    ),
     );
   }
-
-  // Offline content – full screen No Internet
-  Widget buildOfflineScreen(WidgetRef ref) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Icon(Icons.wifi_off, size: 80, color: Colors.grey),
-          const SizedBox(height: 20),
-          const Text(
-            'Oops! No Internet',
-            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 20),
-          ElevatedButton(
-  onPressed: () {
-    ref.read(connectivityProvider.notifier).checkConnection();
-  },
-  child: const Text('Try Again'),
-),
-
-        ],
-      ),
-    );
   }
-}
+
