@@ -133,8 +133,7 @@ static const double _fixedOverlayPixels = 110.0; // change this value if using f
               ],
             ),
 
-              
-
+            
             Positioned(
               top: 0,
               left: 0,

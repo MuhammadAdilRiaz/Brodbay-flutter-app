@@ -1,6 +1,7 @@
 import 'package:brodbay/models/products.dart';
 import 'package:brodbay/utils/cart_action.dart';
 import 'package:brodbay/widgets/common/rating_star.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -19,6 +20,19 @@ class ProductCard extends StatelessWidget {
     this.onTap,
     this.layout = ProductCardLayout.home,
   });
+
+  Widget _imagePlaceholder() {
+  return Container(
+    color: Colors.grey.shade200,
+    alignment: Alignment.center,
+    child: const SizedBox(
+      width: 24,
+      height: 24,
+      child: CircularProgressIndicator(strokeWidth: 2),
+    ),
+  );
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -53,13 +67,22 @@ class ProductCard extends StatelessWidget {
         child: Stack(
           fit: StackFit.expand,
           children: [
-            primary.isNotEmpty
-                ? Image.network(
-                    primary,
-                    fit: BoxFit.contain,
-                    errorBuilder: (_, __, ___) => _imageFallback(),
-                  )
-                : _imageFallback(),
+           primary.isNotEmpty
+    ? CachedNetworkImage(
+        imageUrl: primary,
+        fit: BoxFit.contain,
+
+        // 🟡 while loading
+        placeholder: (context, url) => _imagePlaceholder(),
+
+        // 🔴 if image fails (offline / broken url)
+        errorWidget: (context, url, error) => _imageFallback(),
+
+        // 🧠 enables disk cache automatically
+        useOldImageOnUrlChange: true,
+      )
+    : _imageFallback(),
+
 
             if (overlayCart)
               Positioned(

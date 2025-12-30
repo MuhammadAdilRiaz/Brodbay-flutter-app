@@ -1,17 +1,24 @@
 // lib/providers/product_providers.dart
 import 'dart:math';
-
+import 'package:brodbay/repositories/product_repositry.dart';
+import 'package:brodbay/services/Hive/product_hive_cache.dart';
 import 'package:brodbay/services/ProductServices/product_services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/products.dart';
 
-/// A simple provider for the ProductService (network layer).
+
 final productServiceProvider = Provider<ProductService>((ref) {
   return ProductService();
 });
 
-/// AsyncNotifierProvider that holds the list of products and exposes
-/// async loading/error/data states.
+final productRepositoryProvider = Provider<ProductRepository>((ref) {
+  return ProductRepository(
+    ref.read(productServiceProvider),
+    HiveProductCache(),
+  );
+});
+
+
 final productsListProvider =
     AsyncNotifierProvider<ProductsListNotifier, List<Product>>(
   ProductsListNotifier.new,
@@ -31,7 +38,9 @@ class ProductsListNotifier extends AsyncNotifier<List<Product>> {
   Future<List<Product>> loadInitial() async {
     state = const AsyncValue.loading();
     try {
-      final list = await _service.fetchProducts();
+      final repo = ref.read(productRepositoryProvider);
+final list = await repo.getProducts();
+
       state = AsyncValue.data(list);
       return list;
     } catch (e, st) {
@@ -39,6 +48,7 @@ class ProductsListNotifier extends AsyncNotifier<List<Product>> {
       rethrow;
     }
   }
+
 
   /// Refresh / reload
   Future<void> refresh() async {
@@ -125,8 +135,6 @@ final productRowConfigProvider = Provider<ProductRowConfig>((ref) {
   return ProductRowConfig(limit: _productRowLimit);
 });
 
-/// Visible count state: how many items the row should currently show.
-/// Default is `limit` (10). Each "view more" tap increments this by `limit`.
 final productRowVisibleCountProvider = StateProvider<int>((ref) => _productRowLimit);
 
 /// Sale detection adapted to your Product model

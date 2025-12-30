@@ -1,3 +1,5 @@
+import 'package:brodbay/repositories/category_repositry.dart';
+import 'package:brodbay/services/Hive/product_hive_cache.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/category_model.dart';
 import '../models/products.dart';
@@ -104,8 +106,9 @@ class CategoryNotifier extends StateNotifier<CategoryState> {
     if (state.productsByCategory.containsKey(categoryId)) return;
 
     try {
-      final api = ref.read(productApiProvider);
-      final products = await api.fetchProductsByCategory(categoryId);
+    final repo = ref.read(categoryRepositoryProvider);
+    final products = await repo.getProductsByCategory(categoryId);
+
 
       final map = Map<int, List<Product>>.from(state.productsByCategory);
       map[categoryId] = products;
@@ -129,7 +132,7 @@ class CategoryNotifier extends StateNotifier<CategoryState> {
 
 
 /* ───────────────────────
-   DERIVED PROVIDERS
+   DERIVED PROVIDERSs
 ──────────────────────── */
 
 // 🔹 LEFT MENU (MAIN CATEGORIES)
@@ -164,4 +167,12 @@ final selectedCategoryProductsProvider = Provider<List<Product>>((ref) {
 
   final mainId = state.mainCategories[index - 1].id;
   return state.productsByCategory[mainId] ?? [];
+});
+
+final categoryRepositoryProvider = Provider<CategoryRepository>((ref) {
+  return CategoryRepository(
+    ref.read(categoryApiProvider),
+    ref.read(productApiProvider),
+    HiveProductCache(),
+  );
 });

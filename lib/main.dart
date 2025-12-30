@@ -1,8 +1,10 @@
+import 'package:brodbay/models/product_hive.dart';
 import 'package:brodbay/providers/profile_providers.dart';
 import 'package:brodbay/screens/splash%20screen/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart' hide ChangeNotifierProvider;
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'widgets/Bottom Bar/bottom_nav_bar.dart';
 import 'firebase_options.dart';
@@ -11,6 +13,11 @@ import 'firebase_options.dart';
 void main() 
  async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+
+  Hive.registerAdapter(HiveProductAdapter());
+
+  await Hive.openBox<HiveProduct>('productsBox');
    await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
