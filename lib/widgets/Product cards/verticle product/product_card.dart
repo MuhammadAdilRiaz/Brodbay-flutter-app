@@ -54,51 +54,37 @@ class ProductCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
 
-            /// IMAGE + OPTIONAL CART OVERLAY
            ClipRRect(
   borderRadius: BorderRadius.circular(8),
-  child: LayoutBuilder(
-    builder: (context, constraints) {
-      final imageHeight = constraints.maxWidth / 1.6;
+  child: AspectRatio(
+    aspectRatio: 1 / 1, // square card, change if you want
+    child: Stack(
+      fit: StackFit.expand,
+      children: [
+        primary.isNotEmpty
+            ? CachedNetworkImage(
+                imageUrl: primary,
+                fit: BoxFit.contain, // ✅ image always fits inside
+                placeholder: (context, url) => _imagePlaceholder(),
+                errorWidget: (context, url, error) => _imageFallback(),
+                useOldImageOnUrlChange: true,
+              )
+            : _imageFallback(),
 
-      return SizedBox(
-        height: imageHeight,
-        width: double.infinity,
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-           primary.isNotEmpty
-    ? CachedNetworkImage(
-        imageUrl: primary,
-        fit: BoxFit.contain,
-
-        // 🟡 while loading
-        placeholder: (context, url) => _imagePlaceholder(),
-
-        // 🔴 if image fails (offline / broken url)
-        errorWidget: (context, url, error) => _imageFallback(),
-
-        // 🧠 enables disk cache automatically
-        useOldImageOnUrlChange: true,
-      )
-    : _imageFallback(),
-
-
-            if (overlayCart)
-              Positioned(
-                right: 2,
-                bottom: 2,
-                child: _CartButton(
-                  product: product,
-                  isOverlay: true,
-                ),
-              ),
-          ],
-        ),
-      );
-    },
+        if (overlayCart)
+          Positioned(
+            right: 6,
+            bottom: 6,
+            child: _CartButton(
+              product: product,
+              isOverlay: true,
+            ),
+          ),
+      ],
+    ),
   ),
 ),
+
 
             /// TITLE
             Text(
@@ -111,7 +97,9 @@ class ProductCard extends StatelessWidget {
             const SizedBox(height: 6),
 
             /// PRICE ROW
-            Row(
+            Wrap(
+              spacing: 6,
+              runSpacing: 2,
               children: [
                 Text(
                   '${product.currencySymbol}${product.price.toStringAsFixed(2)}',
@@ -121,7 +109,6 @@ class ProductCard extends StatelessWidget {
                     color: Color(0xFFFF6304),
                   ),
                 ),
-                const SizedBox(width: 6),
                 if (product.regular_price != null)
                   Text(
                     '${product.currencySymbol}${product.regular_price!.toStringAsFixed(2)}',

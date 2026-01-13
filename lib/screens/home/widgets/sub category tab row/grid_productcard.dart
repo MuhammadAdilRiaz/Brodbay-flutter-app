@@ -1,6 +1,6 @@
 import 'package:brodbay/providers/category_provider.dart';
 import 'package:brodbay/screens/product%20Detail/product_detail.dart';
-import 'package:brodbay/widgets/Product%20cards/Row%20product/product_card.dart';
+import 'package:brodbay/widgets/Product%20cards/verticle%20product/product_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';

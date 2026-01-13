@@ -6,7 +6,7 @@ import 'package:brodbay/screens/product%20Detail/product_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import '../../widgets/Product cards/Row product/product_card.dart';
+import '../../widgets/Product cards/verticle product/product_card.dart';
 import 'widget/App Bar/cart_appbar.dart';
 import 'widget/Empty Cart/empty_cart.dart';
 

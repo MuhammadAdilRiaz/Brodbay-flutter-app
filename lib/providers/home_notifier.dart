@@ -1,6 +1,5 @@
 // lib/providers/home_notifier.dart
 import 'package:brodbay/models/products.dart';
-import 'package:brodbay/providers/connectivity_providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:brodbay/providers/category_provider.dart';
 import 'package:brodbay/models/category_model.dart';

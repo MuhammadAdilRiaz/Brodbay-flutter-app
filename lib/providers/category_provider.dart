@@ -103,6 +103,8 @@ class CategoryNotifier extends StateNotifier<CategoryState> {
 
   // 🔹 LOAD PRODUCTS FOR A CATEGORY
   Future<void> loadProductsOfCategory(int categoryId) async {
+
+
     if (state.productsByCategory.containsKey(categoryId)) return;
 
     try {

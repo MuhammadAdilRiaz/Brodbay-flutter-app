@@ -1,4 +1,5 @@
 import 'package:brodbay/models/products.dart';
+import 'package:brodbay/screens/product%20Detail/widgets/Product%20Options/product_variant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -36,11 +37,8 @@ class ProductDetailScreen extends ConsumerWidget {
       children: [
         TitleRatingSection(product: product),
 
-        const SizedBox(height: 10),
-        ColorSelector(product: product),
-
         const SizedBox(height: 16),
-        SizeSelector(product: product),
+        VariantSelector(product: product),
 
         const SizedBox(height: 16),
         ProductTextDetail(description: product.description),

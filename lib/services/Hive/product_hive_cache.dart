@@ -17,4 +17,6 @@ class HiveProductCache {
   List<HiveProduct> getProducts() {
     return box.values.toList();
   }
+
+  
 }

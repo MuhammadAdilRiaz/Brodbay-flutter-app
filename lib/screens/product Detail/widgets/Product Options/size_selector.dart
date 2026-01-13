@@ -10,82 +10,77 @@ class SizeSelector extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedVariation = ref.watch(selectedVariationProvider(product));
-
     final selectedSize = ref.watch(selectedSizeProvider);
-    final isOpen = ref.watch(showSizeOptionsProvider);
 
-
-    // Safe fetch of sizes
     final sizeAttr = product.attributes
         .where((a) => a.name == "Sizes")
         .toList();
 
-   final sizes = sizeAttr.isNotEmpty
-    ? sizeAttr.first.terms.map((e) => e.name).toList()
-    : <String>[];
+    final sizes = sizeAttr.isNotEmpty
+        ? sizeAttr.first.terms.map((e) => e.name).toList()
+        : <String>[];
 
-    if (sizes.isEmpty) return SizedBox.shrink();
+    if (sizes.isEmpty) return const SizedBox.shrink();
 
-    if (selectedSize == null && sizes.isNotEmpty) {
-  WidgetsBinding.instance.addPostFrameCallback((_) {
-    ref.read(selectedSizeProvider.notifier).state = sizes.first;
-  });
+    return ListTile(
+      contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+      title: const Text(
+        "Size",
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
+      subtitle: Text(selectedSize ?? sizes.first),
+      trailing: const Icon(Icons.keyboard_arrow_up),
+      onTap: () {
+        _openSizeBottomSheet(context, ref, sizes);
+      },
+    );
+  }
 }
+void _openSizeBottomSheet(
+  BuildContext context,
+  WidgetRef ref,
+  List<String> sizes,
+) {
+  showModalBottomSheet(
+    context: context,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+    ),
+    builder: (_) {
+      final selectedSize = ref.watch(selectedSizeProvider);
 
-
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Dropdown button
-          GestureDetector(
-            onTap: () {
-              ref.read(showSizeOptionsProvider.notifier).state = !isOpen;
-            },
-            child: Row(
-              children: [
-                const Text(
-                  "Size",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(width: 10),
-                Text(
-                  selectedSize ?? sizes.first,
-                  style: const TextStyle(fontSize: 13),
-                ),
-                const SizedBox(width: 6),
-                Icon(
-                  isOpen ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
-                  size: 20,
-                ),
-              ],
+      return Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              "Select Size",
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
-          ),
-          const SizedBox(height: 8),
+            const SizedBox(height: 12),
 
-          // Options appear below
-          if (isOpen)
             Wrap(
               spacing: 10,
               runSpacing: 10,
               children: sizes.map((size) {
                 final isSelected = size == selectedSize;
+
                 return GestureDetector(
                   onTap: () {
                     ref.read(selectedSizeProvider.notifier).state = size;
-                 
+                    Navigator.pop(context);
                   },
                   child: Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 14, vertical: 8),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(
-                          color: isSelected
-                              ? Colors.orange
-                              : Colors.grey.shade300),
+                        color:
+                            isSelected ? Colors.orange : Colors.grey.shade300,
+                      ),
                       color: isSelected
                           ? Colors.orange.withOpacity(0.08)
                           : Colors.white,
@@ -93,17 +88,17 @@ class SizeSelector extends ConsumerWidget {
                     child: Text(
                       size,
                       style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w500,
-                        color: isSelected ? Colors.orange : Colors.black87,
+                        color:
+                            isSelected ? Colors.orange : Colors.black87,
                       ),
                     ),
                   ),
                 );
               }).toList(),
             ),
-        ],
-      ),
-    );
-  }
+          ],
+        ),
+      );
+    },
+  );
 }
