@@ -1,4 +1,4 @@
-import 'package:brodbay/models/products.dart';
+/*import 'package:brodbay/models/products.dart';
 import 'package:brodbay/providers/product_detail_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -112,3 +112,4 @@ void _openColorBottomSheet(
     },
   );
 }
+*/

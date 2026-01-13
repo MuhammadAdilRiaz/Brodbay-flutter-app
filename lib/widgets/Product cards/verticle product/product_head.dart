@@ -42,7 +42,7 @@ import 'product_card.dart';
               crossAxisSpacing: 0,
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              padding: const EdgeInsets.symmetric(horizontal: 8),
+              padding: EdgeInsets.zero,
               itemCount: list.length,
               itemBuilder: (context, index) {
                 final p = list[index];
