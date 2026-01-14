@@ -2,10 +2,7 @@ import 'package:brodbay/models/products.dart';
 import 'package:brodbay/screens/product%20Detail/widgets/Product%20Options/product_variant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'widgets/Image Detail/product_images.dart';
-import 'widgets/Product Options/color_selector.dart';
-import 'widgets/Product Options/size_selector.dart';
 import 'widgets/SearchBar/Product_Detail_SearchBar.dart';
 import 'widgets/Detail Section/product_text_detail.dart';
 import 'widgets/Detail Section/rating_section.dart';

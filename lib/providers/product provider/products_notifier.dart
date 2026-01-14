@@ -2,7 +2,7 @@
 
 import 'dart:convert';
 import 'package:brodbay/models/products.dart';
-import 'package:brodbay/providers/woo_secure_provider.dart';
+import 'package:brodbay/providers/product%20provider/woo_secure_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 
