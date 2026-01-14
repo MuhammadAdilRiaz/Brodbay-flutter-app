@@ -1,4 +1,4 @@
-import 'package:brodbay/providers/splash_providers.dart';
+import 'package:brodbay/providers/splash%20provider/splash_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../models/products.dart';
+import '../../models/product model/products.dart';
 
 /// ----------------------------
 /// BASIC UI STATES

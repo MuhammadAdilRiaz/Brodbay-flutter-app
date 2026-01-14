@@ -1,5 +1,5 @@
-import 'package:brodbay/models/product_hive.dart';
-import 'package:brodbay/providers/profile_providers.dart';
+import 'package:brodbay/models/product%20model/product_hive.dart';
+import 'package:brodbay/providers/profile%20provider/profile_providers.dart';
 import 'package:brodbay/screens/splash%20screen/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';

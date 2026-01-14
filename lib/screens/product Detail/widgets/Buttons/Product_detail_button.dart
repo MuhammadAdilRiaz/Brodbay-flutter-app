@@ -1,8 +1,8 @@
 
-import 'package:brodbay/models/checkout_item.dart';
-import 'package:brodbay/models/products.dart';
-import 'package:brodbay/providers/cart_providers.dart';
-import 'package:brodbay/providers/checkout_providers.dart';
+import 'package:brodbay/models/checkout%20model/checkout_item.dart';
+import 'package:brodbay/models/product%20model/products.dart';
+import 'package:brodbay/providers/cart%20providers/cart_providers.dart';
+import 'package:brodbay/providers/checkout%20provider/checkout_providers.dart';
 import 'package:brodbay/screens/checkout/checkout_screen.dart';
 import 'package:brodbay/utils/cart_action.dart';
 import 'package:flutter/material.dart';

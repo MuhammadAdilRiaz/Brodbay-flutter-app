@@ -4,7 +4,7 @@ import 'package:brodbay/repositories/product_repositry.dart';
 import 'package:brodbay/services/Hive/product_hive_cache.dart';
 import 'package:brodbay/services/ProductServices/product_services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../models/products.dart';
+import '../../models/product model/products.dart';
 
 
 final productServiceProvider = Provider<ProductService>((ref) {

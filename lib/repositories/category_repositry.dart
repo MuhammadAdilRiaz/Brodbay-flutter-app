@@ -1,10 +1,10 @@
 import 'package:brodbay/services/Hive/product_hive_cache.dart';
 
-import '../models/category_model.dart';
-import '../models/products.dart';
+import '../models/category model/category_model.dart';
+import '../models/product model/products.dart';
 import '../services/CategoryServices/category_services.dart';
 import '../services/ProductServices/product_services.dart';
-import '../models/product_hive.dart';
+import '../models/product model/product_hive.dart';
 
 class CategoryRepository {
   final CategoryApiService categoryApi;

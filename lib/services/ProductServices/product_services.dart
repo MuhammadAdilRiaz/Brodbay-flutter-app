@@ -1,7 +1,7 @@
 // lib/services/product_service.dart
 
 import 'dart:convert';
-import 'package:brodbay/models/products.dart';
+import 'package:brodbay/models/product%20model/products.dart';
 import 'package:http/http.dart' as http;
 
 class ProductService {

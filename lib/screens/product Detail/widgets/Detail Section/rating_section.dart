@@ -1,5 +1,5 @@
 // lib/widgets/title_rating_section.dart
-import 'package:brodbay/models/products.dart';
+import 'package:brodbay/models/product%20model/products.dart';
 import 'package:brodbay/widgets/common/rating_star.dart';
 import 'package:flutter/material.dart';
 import 'price_section.dart';

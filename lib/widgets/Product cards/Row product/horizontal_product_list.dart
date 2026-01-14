@@ -2,8 +2,8 @@ import 'dart:math';
 import 'package:brodbay/widgets/Product%20cards/Row%20product/horizontal_product_cards.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:brodbay/models/products.dart';
-import 'package:brodbay/providers/product_providers.dart';
+import 'package:brodbay/models/product%20model/products.dart';
+import 'package:brodbay/providers/product%20provider/product_providers.dart';
 
 import '../../../screens/product Detail/product_detail.dart';
 

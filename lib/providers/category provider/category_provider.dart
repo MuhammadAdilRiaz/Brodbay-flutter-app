@@ -1,10 +1,10 @@
 import 'package:brodbay/repositories/category_repositry.dart';
 import 'package:brodbay/services/Hive/product_hive_cache.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../models/category_model.dart';
-import '../models/products.dart';
-import '../services/CategoryServices/category_services.dart';
-import '../services/ProductServices/product_services.dart';
+import '../../models/category model/category_model.dart';
+import '../../models/product model/products.dart';
+import '../../services/CategoryServices/category_services.dart';
+import '../../services/ProductServices/product_services.dart';
 
 class CategoryState {
   final int selectedIndex; // 0 = ForYou

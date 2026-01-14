@@ -1,8 +1,8 @@
 // lib/providers/home_notifier.dart
-import 'package:brodbay/models/products.dart';
+import 'package:brodbay/models/product%20model/products.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:brodbay/providers/category_provider.dart';
-import 'package:brodbay/models/category_model.dart';
+import 'package:brodbay/providers/category%20provider/category_provider.dart';
+import 'package:brodbay/models/category%20model/category_model.dart';
 
 class HomeState {
   final bool isSticky;

@@ -1,6 +1,6 @@
 // lib/widgets/Tab Bar/tab_bar.dart
-import 'package:brodbay/providers/category_provider.dart';
-import 'package:brodbay/providers/theme_provider.dart';
+import 'package:brodbay/providers/category%20provider/category_provider.dart';
+import 'package:brodbay/providers/banner%20provider/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

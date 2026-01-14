@@ -1,4 +1,4 @@
-import 'package:brodbay/providers/theme_provider.dart';
+import 'package:brodbay/providers/banner%20provider/theme_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 

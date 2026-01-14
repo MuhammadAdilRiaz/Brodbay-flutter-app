@@ -1,6 +1,6 @@
 import 'package:brodbay/widgets/common/rating_star.dart';
 import 'package:flutter/material.dart';
-import 'package:brodbay/models/products.dart';
+import 'package:brodbay/models/product%20model/products.dart';
 
 class HorizontalProductCard extends StatelessWidget {
   final Product product;

@@ -1,5 +1,5 @@
-import 'package:brodbay/providers/cart_providers.dart';
-import 'package:brodbay/providers/product_providers.dart';
+import 'package:brodbay/providers/cart%20providers/cart_providers.dart';
+import 'package:brodbay/providers/product%20provider/product_providers.dart';
 import 'package:brodbay/screens/Cart/widget/Cart%20Tile/cart_item_tile.dart';
 import 'package:brodbay/screens/Cart/widget/Footer/cart_footer.dart';
 import 'package:brodbay/screens/product%20Detail/product_detail.dart';

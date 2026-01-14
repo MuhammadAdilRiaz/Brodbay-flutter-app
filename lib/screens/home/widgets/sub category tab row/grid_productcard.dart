@@ -1,4 +1,4 @@
-import 'package:brodbay/providers/category_provider.dart';
+import 'package:brodbay/providers/category%20provider/category_provider.dart';
 import 'package:brodbay/screens/product%20Detail/product_detail.dart';
 import 'package:brodbay/widgets/Product%20cards/verticle%20product/product_card.dart';
 import 'package:flutter/material.dart';

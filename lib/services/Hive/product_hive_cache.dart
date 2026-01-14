@@ -1,4 +1,4 @@
-import 'package:brodbay/models/product_hive.dart';
+import 'package:brodbay/models/product%20model/product_hive.dart';
 import 'package:hive/hive.dart';
 
 

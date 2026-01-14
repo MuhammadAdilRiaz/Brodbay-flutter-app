@@ -1,8 +1,8 @@
 // lib/screens/home_screen.dart
 import 'dart:math';
 import 'dart:ui';
-import 'package:brodbay/providers/category_provider.dart';
-import 'package:brodbay/providers/theme_provider.dart';
+import 'package:brodbay/providers/category%20provider/category_provider.dart';
+import 'package:brodbay/providers/banner%20provider/theme_provider.dart';
 import 'package:brodbay/screens/home/widgets/sub%20category%20tab%20row/grid_productcard.dart';
 import 'package:brodbay/screens/home/widgets/sub%20category%20tab%20row/sub_tabrow.dart';
 import 'package:brodbay/widgets/Product%20cards/Row%20product/horizontal_product_head.dart';
@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/services.dart';
 import '../../widgets/Product cards/verticle product/product_head.dart';
-import '../../providers/home_notifier.dart';
+import '../../providers/home provider/home_notifier.dart';
 import 'widgets/App Bar/app_bar.dart';
 import 'widgets/Sale Banner/sale_banner.dart';
 import 'widgets/Search Bar/search_bar.dart';

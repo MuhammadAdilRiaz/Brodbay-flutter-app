@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:brodbay/providers/banner_notifier.dart';
+import 'package:brodbay/providers/banner%20provider/banner_notifier.dart';
 
 class SaleBanner extends ConsumerWidget {
   const SaleBanner({super.key});

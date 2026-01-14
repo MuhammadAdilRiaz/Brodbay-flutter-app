@@ -1,6 +1,6 @@
 // lib/widgets/price_section.dart
-import 'package:brodbay/models/products.dart';
-import 'package:brodbay/providers/product_detail_providers.dart';
+import 'package:brodbay/models/product%20model/products.dart';
+import 'package:brodbay/providers/product%20detail%20provider/product_detail_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

@@ -1,8 +1,8 @@
-import 'package:brodbay/models/cart_items.dart';
-import 'package:brodbay/models/products.dart';
+import 'package:brodbay/models/cart%20model/cart_items.dart';
+import 'package:brodbay/models/product%20model/products.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../providers/cart_providers.dart';
+import '../providers/cart providers/cart_providers.dart';
 
 
 void handleAddToCart({

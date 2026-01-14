@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../providers/bottom_nav_providers.dart';
+import '../../providers/bottom bar provider/bottom_nav_providers.dart';
 import '/screens/home/home.dart';
 import '/screens/category/category.dart';
 import '/screens/Cart/cart_screen.dart';

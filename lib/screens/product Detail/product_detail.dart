@@ -1,4 +1,4 @@
-import 'package:brodbay/models/products.dart';
+import 'package:brodbay/models/product%20model/products.dart';
 import 'package:brodbay/screens/product%20Detail/widgets/Product%20Options/product_variant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

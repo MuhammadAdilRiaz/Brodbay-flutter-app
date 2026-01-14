@@ -1,5 +1,5 @@
-import 'package:brodbay/models/cart_items.dart';
-import 'package:brodbay/providers/cart_providers.dart';
+import 'package:brodbay/models/cart%20model/cart_items.dart';
+import 'package:brodbay/providers/cart%20providers/cart_providers.dart';
 import 'package:brodbay/screens/Cart/widget/Quantity/quantity_controll.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

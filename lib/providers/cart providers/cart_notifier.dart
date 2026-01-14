@@ -1,4 +1,4 @@
-import 'package:brodbay/models/cart_items.dart';
+import 'package:brodbay/models/cart%20model/cart_items.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CartNotifier extends StateNotifier<List<CartItem>> {

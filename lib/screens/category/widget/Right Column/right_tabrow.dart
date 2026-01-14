@@ -2,7 +2,7 @@ import 'package:brodbay/screens/product%20Detail/product_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:brodbay/models/products.dart';
+import 'package:brodbay/models/product%20model/products.dart';
 import 'package:brodbay/widgets/Product%20cards/verticle%20product/product_card.dart';
 
 class CategoryTabsScreen extends ConsumerWidget {

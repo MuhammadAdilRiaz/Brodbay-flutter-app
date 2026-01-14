@@ -1,4 +1,4 @@
-import 'package:brodbay/models/products.dart';
+import 'package:brodbay/models/product%20model/products.dart';
 import 'package:brodbay/utils/cart_action.dart';
 import 'package:brodbay/widgets/common/rating_star.dart';
 import 'package:cached_network_image/cached_network_image.dart';

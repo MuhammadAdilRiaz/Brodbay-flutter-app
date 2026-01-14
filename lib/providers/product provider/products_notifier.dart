@@ -1,7 +1,7 @@
 // File: lib/services/products_notifier.dart
 
 import 'dart:convert';
-import 'package:brodbay/models/products.dart';
+import 'package:brodbay/models/product%20model/products.dart';
 import 'package:brodbay/providers/product%20provider/woo_secure_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

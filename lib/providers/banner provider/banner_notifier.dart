@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:brodbay/models/banner_model.dart';
+import 'package:brodbay/models/banner%20model/banner_model.dart';
 
 class BannerState {
   final List<BannerModel> banners;

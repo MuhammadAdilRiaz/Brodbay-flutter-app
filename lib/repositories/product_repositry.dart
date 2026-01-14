@@ -1,7 +1,7 @@
 import 'package:brodbay/services/Hive/product_hive_cache.dart';
-import '../models/products.dart';
+import '../models/product model/products.dart';
 import '../services/ProductServices/product_services.dart';
-import '../models/product_hive.dart';
+import '../models/product model/product_hive.dart';
 
 class ProductRepository {
   final ProductService api;

@@ -1,6 +1,6 @@
-import 'package:brodbay/models/checkout_item.dart';
+import 'package:brodbay/models/checkout%20model/checkout_item.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../state/checkout_state.dart';
+import '../../state/checkout_state.dart';
 
 
 final checkoutProvider =

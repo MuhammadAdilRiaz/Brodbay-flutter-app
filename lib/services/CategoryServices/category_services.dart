@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import '../../models/category_model.dart';
+import '../../models/category model/category_model.dart';
 
 class CategoryApiService {
   static const String _endpoint =

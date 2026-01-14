@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:brodbay/providers/product_providers.dart';
+import 'package:brodbay/providers/product%20provider/product_providers.dart';
 import 'horizontal_product_list.dart';
 
 class HorizontalProductHead extends ConsumerWidget {

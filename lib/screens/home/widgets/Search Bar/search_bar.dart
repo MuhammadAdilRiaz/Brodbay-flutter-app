@@ -1,9 +1,9 @@
 // lib/widgets/Search Bar/search_bar.dart
-import 'package:brodbay/providers/category_provider.dart';
-import 'package:brodbay/providers/theme_provider.dart';
+import 'package:brodbay/providers/category%20provider/category_provider.dart';
+import 'package:brodbay/providers/banner%20provider/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../providers/home_notifier.dart';
+import '../../../../providers/home provider/home_notifier.dart';
 
 class SearchBarWidget extends ConsumerStatefulWidget {
   final bool isSticky;

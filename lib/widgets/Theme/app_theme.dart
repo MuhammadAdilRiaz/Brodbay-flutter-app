@@ -1,4 +1,4 @@
-import 'package:brodbay/models/theme_model.dart';
+import 'package:brodbay/models/banner%20model/theme_model.dart';
 import 'package:flutter/material.dart';
 
 
